@@ -1,4 +1,4 @@
-package com.example.pwdgenf
+package tsctsc6.pwdgenf
 
 import io.flutter.embedding.android.FlutterActivity
 

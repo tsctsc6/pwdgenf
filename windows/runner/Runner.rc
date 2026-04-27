@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
+            VALUE "CompanyName", "tsctsc6" "\0"
             VALUE "FileDescription", "pwdgenf" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "pwdgenf" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 tsctsc6. All rights reserved." "\0"
             VALUE "OriginalFilename", "pwdgenf.exe" "\0"
             VALUE "ProductName", "pwdgenf" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
