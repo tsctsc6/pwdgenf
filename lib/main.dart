@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pwdgenf/src/rust/api/simple.dart';
+import 'package:get/get.dart';
+import 'package:pwdgenf/app/modules/add_acct/views/add_acct_view.dart';
+import 'package:pwdgenf/app/modules/home/views/home_view.dart';
+import 'package:pwdgenf/app/modules/settings/views/settings_view.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
 Future<void> main() async {
@@ -12,14 +15,52 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('flutter_rust_bridge quickstart')),
-        body: Center(
-          child: Text(
-            'Action: Call Rust `greet("Tom")`\nResult: `${greet(name: "Tom")}`',
-          ),
+    return GetMaterialApp(
+      title: 'pwdgetf',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: MainLayoutWidget(),
+    );
+  }
+}
+
+class MainLayoutWidget extends StatelessWidget {
+  const MainLayoutWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('pwdgetf Home')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Get.back(); // close the drawer on tap
+                Get.to(
+                  const SettingsView(),
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+          ],
         ),
+      ),
+      body: HomeView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(const AddAcctView(), transition: Transition.rightToLeft);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
