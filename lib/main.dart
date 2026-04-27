@@ -1,12 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/modules/add_acct/views/add_acct_view.dart';
 import 'package:pwdgenf/app/modules/home/views/home_view.dart';
 import 'package:pwdgenf/app/modules/settings/views/settings_view.dart';
+import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   await RustLib.init();
+  if (kDebugMode || kProfileMode) {
+    initPath(applicationSupportDirectory: 'debug_data');
+  } else if (kReleaseMode) {
+    final directory = await getApplicationSupportDirectory();
+    initPath(applicationSupportDirectory: directory.path);
+  }
+  initRustLogger();
   runApp(const MyApp());
 }
 

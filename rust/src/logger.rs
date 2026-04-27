@@ -13,12 +13,12 @@ use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, Env
 static LOG_GUARD: OnceLock<WorkerGuard> = OnceLock::new();
 
 /// Initializes the logger with both console and file outputs, using a rolling file appender.
-pub fn init_logger(verbose: u8) -> anyhow::Result<()> {
+pub fn init_logger(verbose: u8, path: &str) -> anyhow::Result<()> {
     let file_appender = RollingFileAppender::builder()
         .rotation(Rotation::DAILY)
         .filename_suffix("log")
         .max_log_files(7)
-        .build("logs")?;
+        .build(path)?;
 
     let (non_blocking_appender, guard) = tracing_appender::non_blocking(file_appender);
 
