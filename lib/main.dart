@@ -47,7 +47,7 @@ class MainLayoutWidget extends StatelessWidget {
               onTap: () {
                 Get.back(); // close the drawer on tap
                 Get.to(
-                  const SettingsView(),
+                  () => const SettingsView(),
                   transition: Transition.rightToLeft,
                 );
               },
@@ -58,7 +58,7 @@ class MainLayoutWidget extends StatelessWidget {
       body: HomeView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(const AddAcctView(), transition: Transition.rightToLeft);
+          Get.to(() => const AddAcctView(), transition: Transition.rightToLeft);
         },
         child: const Icon(Icons.add),
       ),
