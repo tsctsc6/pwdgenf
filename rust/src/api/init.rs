@@ -1,7 +1,10 @@
 use std::{fs, path::Path};
 
+use migration::{Migrator, MigratorTrait};
+
 use crate::{
     app_env::{get_app_support_directory, init_app_env},
+    factory::create_db_connection,
     logger::init_logger,
 };
 
@@ -29,4 +32,11 @@ pub fn init_rust_logger() -> anyhow::Result<()> {
         .to_str()
         .ok_or_else(|| anyhow::anyhow!("Failed to construct log directory path"))?;
     init_logger(4, log_dir)
+}
+
+#[flutter_rust_bridge::frb]
+pub async fn init_migrate() -> anyhow::Result<()> {
+    let db = create_db_connection().await?;
+    Migrator::up(&db, None).await?;
+    Ok(())
 }

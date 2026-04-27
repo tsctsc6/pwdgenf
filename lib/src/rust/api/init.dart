@@ -12,3 +12,5 @@ void initPath({required String applicationSupportDirectory}) =>
     );
 
 void initRustLogger() => RustLib.instance.api.crateApiInitInitRustLogger();
+
+Future<void> initMigrate() => RustLib.instance.api.crateApiInitInitMigrate();
