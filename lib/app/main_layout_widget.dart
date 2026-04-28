@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pwdgenf/app/modules/add_acct/views/add_acct_view.dart';
+import 'package:pwdgenf/app/modules/home/views/home_view.dart';
+import 'package:pwdgenf/app/modules/settings/views/settings_view.dart';
+
+class MainLayoutWidget extends StatelessWidget {
+  const MainLayoutWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('pwdgetf Home')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Get.back(); // close the drawer on tap
+                Get.to(
+                  () => const SettingsView(),
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: HomeView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => const AddAcctView(), transition: Transition.rightToLeft);
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
