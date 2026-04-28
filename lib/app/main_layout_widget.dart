@@ -15,11 +15,11 @@ class MainLayoutWidget extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
+            DrawerHeader(
+              decoration: BoxDecoration(color: Get.theme.colorScheme.primary),
               child: Text(
                 'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: TextStyle(color: Get.theme.colorScheme.onPrimary, fontSize: 24),
               ),
             ),
             ListTile(
