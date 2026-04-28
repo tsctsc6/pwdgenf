@@ -82,13 +82,18 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 abstract class RustLibApi extends BaseApi {
   Future<void> crateApiInitInitApp();
 
-  Future<void> crateApiInitInitMigrate();
+  Future<void> crateApiInitInitMigrate({
+    required String applicationSupportDirectory,
+  });
 
   void crateApiInitInitPath({required String applicationSupportDirectory});
 
-  void crateApiInitInitRustLogger();
+  void crateApiInitInitRustLogger({
+    required String applicationSupportDirectory,
+  });
 
   Future<ReadAllAcctDataResult> crateApiReadAllAcctDataReadAllAcctData({
+    required String appSupportDirectory,
     required String searchTerm,
     required BigInt pageIndex,
     required BigInt pageSize,
@@ -131,11 +136,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "init_app", argNames: []);
 
   @override
-  Future<void> crateApiInitInitMigrate() {
+  Future<void> crateApiInitInitMigrate({
+    required String applicationSupportDirectory,
+  }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(applicationSupportDirectory, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -148,14 +156,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiInitInitMigrateConstMeta,
-        argValues: [],
+        argValues: [applicationSupportDirectory],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiInitInitMigrateConstMeta =>
-      const TaskConstMeta(debugName: "init_migrate", argNames: []);
+  TaskConstMeta get kCrateApiInitInitMigrateConstMeta => const TaskConstMeta(
+    debugName: "init_migrate",
+    argNames: ["applicationSupportDirectory"],
+  );
 
   @override
   void crateApiInitInitPath({required String applicationSupportDirectory}) {
@@ -183,11 +193,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   );
 
   @override
-  void crateApiInitInitRustLogger() {
+  void crateApiInitInitRustLogger({
+    required String applicationSupportDirectory,
+  }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(applicationSupportDirectory, serializer);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
         },
         codec: SseCodec(
@@ -195,17 +208,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiInitInitRustLoggerConstMeta,
-        argValues: [],
+        argValues: [applicationSupportDirectory],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiInitInitRustLoggerConstMeta =>
-      const TaskConstMeta(debugName: "init_rust_logger", argNames: []);
+  TaskConstMeta get kCrateApiInitInitRustLoggerConstMeta => const TaskConstMeta(
+    debugName: "init_rust_logger",
+    argNames: ["applicationSupportDirectory"],
+  );
 
   @override
   Future<ReadAllAcctDataResult> crateApiReadAllAcctDataReadAllAcctData({
+    required String appSupportDirectory,
     required String searchTerm,
     required BigInt pageIndex,
     required BigInt pageSize,
@@ -214,6 +230,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(appSupportDirectory, serializer);
           sse_encode_String(searchTerm, serializer);
           sse_encode_u_64(pageIndex, serializer);
           sse_encode_u_64(pageSize, serializer);
@@ -229,7 +246,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiReadAllAcctDataReadAllAcctDataConstMeta,
-        argValues: [searchTerm, pageIndex, pageSize],
+        argValues: [appSupportDirectory, searchTerm, pageIndex, pageSize],
         apiImpl: this,
       ),
     );
@@ -238,7 +255,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiReadAllAcctDataReadAllAcctDataConstMeta =>
       const TaskConstMeta(
         debugName: "read_all_acct_data",
-        argNames: ["searchTerm", "pageIndex", "pageSize"],
+        argNames: [
+          "appSupportDirectory",
+          "searchTerm",
+          "pageIndex",
+          "pageSize",
+        ],
       );
 
   @protected

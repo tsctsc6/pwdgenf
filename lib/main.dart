@@ -10,7 +10,10 @@ import 'package:pwdgenf/src/rust/frb_generated.dart';
 Future<void> main() async {
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
-  initRustLogger();
+  final appEnvService = Get.find<AppEnvService>();
+  initRustLogger(
+    applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+  );
   runApp(const MyApp());
 }
 

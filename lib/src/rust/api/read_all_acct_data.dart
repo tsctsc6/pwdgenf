@@ -10,10 +10,12 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from_query_result_nullable`, `from_query_result`, `select_cols_nested`
 
 Future<ReadAllAcctDataResult> readAllAcctData({
+  required String appSupportDirectory,
   required String searchTerm,
   required BigInt pageIndex,
   required BigInt pageSize,
 }) => RustLib.instance.api.crateApiReadAllAcctDataReadAllAcctData(
+  appSupportDirectory: appSupportDirectory,
   searchTerm: searchTerm,
   pageIndex: pageIndex,
   pageSize: pageSize,

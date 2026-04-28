@@ -9,11 +9,12 @@ use serde::Serialize;
 
 #[flutter_rust_bridge::frb]
 pub async fn read_all_acct_data(
+    app_support_directory: String,
     search_term: String,
     page_index: u64,
     page_size: u64,
 ) -> Result<ReadAllAcctDataResult, CleanError> {
-    let db = create_db_connection().await?;
+    let db = create_db_connection(&app_support_directory).await?;
     let acct_data_query = acct_data::Entity::find()
         .filter(
             Condition::any()

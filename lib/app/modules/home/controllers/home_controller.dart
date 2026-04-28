@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/api/read_all_acct_data.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -41,7 +42,10 @@ class HomeController extends GetxController {
   /// Initializes the database by running migrations. Returns true if successful, false otherwise.
   Future<bool> initDatabase() async {
     try {
-      await initMigrate();
+      final appEnvService = Get.find<AppEnvService>();
+      await initMigrate(
+        applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+      );
       return true;
     } catch (e) {
       debugPrint('Error in InitDatabase: $e');
@@ -86,7 +90,9 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
     debugPrint('pageIndex ${startIndex ~/ count + 1}, pageSize $count');
 
     try {
+      final appEnvService = Get.find<AppEnvService>();
       final response = await readAllAcctData(
+        appSupportDirectory: appEnvService.applicationSupportDirectory,
         searchTerm: controller.searchTerm,
         pageIndex: BigInt.from(startIndex ~/ count),
         pageSize: BigInt.from(count),

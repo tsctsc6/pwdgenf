@@ -102,11 +102,14 @@ fn wire__crate__api__init__init_migrate_impl(
             };
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_application_support_directory = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::clean_error::CleanError>(
                     (move || async move {
-                        let output_ok = crate::api::init::init_migrate().await?;
+                        let output_ok =
+                            crate::api::init::init_migrate(api_application_support_directory)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -166,9 +169,11 @@ fn wire__crate__api__init__init_rust_logger_impl(
             };
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_application_support_directory = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, crate::clean_error::CleanError>((move || {
-                let output_ok = crate::api::init::init_rust_logger()?;
+                let output_ok =
+                    crate::api::init::init_rust_logger(api_application_support_directory)?;
                 Ok(output_ok)
             })())
         },
@@ -196,6 +201,7 @@ fn wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
             };
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_app_support_directory = <String>::sse_decode(&mut deserializer);
             let api_search_term = <String>::sse_decode(&mut deserializer);
             let api_page_index = <u64>::sse_decode(&mut deserializer);
             let api_page_size = <u64>::sse_decode(&mut deserializer);
@@ -204,6 +210,7 @@ fn wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
                 transform_result_sse::<_, crate::clean_error::CleanError>(
                     (move || async move {
                         let output_ok = crate::api::read_all_acct_data::read_all_acct_data(
+                            api_app_support_directory,
                             api_search_term,
                             api_page_index,
                             api_page_size,
