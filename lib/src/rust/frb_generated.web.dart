@@ -8,6 +8,7 @@
 
 import 'api/init.dart';
 import 'api/simple.dart';
+import 'clean_error.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -22,10 +23,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   });
 
   @protected
-  AnyhowException dco_decode_AnyhowException(dynamic raw);
+  String dco_decode_String(dynamic raw);
 
   @protected
-  String dco_decode_String(dynamic raw);
+  CleanError dco_decode_clean_error(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
@@ -37,10 +38,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
-  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
+  String sse_decode_String(SseDeserializer deserializer);
 
   @protected
-  String sse_decode_String(SseDeserializer deserializer);
+  CleanError sse_decode_clean_error(SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
@@ -58,13 +59,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
-  void sse_encode_AnyhowException(
-    AnyhowException self,
-    SseSerializer serializer,
-  );
+  void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
-  void sse_encode_String(String self, SseSerializer serializer);
+  void sse_encode_clean_error(CleanError self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_strict(

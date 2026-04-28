@@ -5,6 +5,7 @@
 
 import 'api/init.dart';
 import 'api/simple.dart';
+import 'clean_error.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -163,7 +164,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiInitInitMigrateConstMeta,
         argValues: [],
@@ -186,7 +187,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiInitInitPathConstMeta,
         argValues: [applicationSupportDirectory],
@@ -210,7 +211,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeErrorData: sse_decode_clean_error,
         ),
         constMeta: kCrateApiInitInitRustLoggerConstMeta,
         argValues: [],
@@ -223,15 +224,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "init_rust_logger", argNames: []);
 
   @protected
-  AnyhowException dco_decode_AnyhowException(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return AnyhowException(raw as String);
-  }
-
-  @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  CleanError dco_decode_clean_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return CleanError_AnyhowError(message: dco_decode_String(raw[1]));
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -253,17 +259,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_String(deserializer);
-    return AnyhowException(inner);
-  }
-
-  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  CleanError sse_decode_clean_error(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_message = sse_decode_String(deserializer);
+        return CleanError_AnyhowError(message: var_message);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -297,18 +310,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_AnyhowException(
-    AnyhowException self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.message, serializer);
-  }
-
-  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_clean_error(CleanError self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case CleanError_AnyhowError(message: final message):
+        sse_encode_i_32(0, serializer);
+        sse_encode_String(message, serializer);
+    }
   }
 
   @protected

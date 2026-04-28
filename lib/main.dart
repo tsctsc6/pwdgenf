@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/main_layout_widget.dart';
+import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: MainLayoutWidget(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(HomeController());
+      }),
     );
   }
 }

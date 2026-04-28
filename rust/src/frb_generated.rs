@@ -134,7 +134,7 @@ fn wire__crate__api__init__init_migrate_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             deserializer.end();
             move |context| async move {
-                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                transform_result_sse::<_, crate::clean_error::CleanError>(
                     (move || async move {
                         let output_ok = crate::api::init::init_migrate().await?;
                         Ok(output_ok)
@@ -168,12 +168,10 @@ fn wire__crate__api__init__init_path_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_application_support_directory = <String>::sse_decode(&mut deserializer);
             deserializer.end();
-            transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                (move || {
-                    let output_ok = crate::api::init::init_path(api_application_support_directory)?;
-                    Ok(output_ok)
-                })(),
-            )
+            transform_result_sse::<_, crate::clean_error::CleanError>((move || {
+                let output_ok = crate::api::init::init_path(api_application_support_directory)?;
+                Ok(output_ok)
+            })())
         },
     )
 }
@@ -199,31 +197,39 @@ fn wire__crate__api__init__init_rust_logger_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             deserializer.end();
-            transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                (move || {
-                    let output_ok = crate::api::init::init_rust_logger()?;
-                    Ok(output_ok)
-                })(),
-            )
+            transform_result_sse::<_, crate::clean_error::CleanError>((move || {
+                let output_ok = crate::api::init::init_rust_logger()?;
+                Ok(output_ok)
+            })())
         },
     )
 }
 
 // Section: dart2rust
 
-impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <String>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::anyhow::anyhow!("{}", inner);
-    }
-}
-
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for crate::clean_error::CleanError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_message = <String>::sse_decode(deserializer);
+                return crate::clean_error::CleanError::AnyhowError {
+                    message: var_message,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -297,10 +303,28 @@ fn pde_ffi_dispatcher_sync_impl(
 
 // Section: rust2dart
 
-impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(format!("{:?}", self), serializer);
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::clean_error::CleanError {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            crate::clean_error::CleanError::AnyhowError { message } => {
+                [0.into_dart(), message.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::clean_error::CleanError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::clean_error::CleanError>
+    for crate::clean_error::CleanError
+{
+    fn into_into_dart(self) -> crate::clean_error::CleanError {
+        self
     }
 }
 
@@ -308,6 +332,21 @@ impl SseEncode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<u8>>::sse_encode(self.into_bytes(), serializer);
+    }
+}
+
+impl SseEncode for crate::clean_error::CleanError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::clean_error::CleanError::AnyhowError { message } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(message, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 

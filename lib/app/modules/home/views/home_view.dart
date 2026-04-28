@@ -6,6 +6,14 @@ class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('hello'.tr, style: TextStyle(fontSize: 20)));
+    return Center(
+      child: Obx(() {
+        if (controller.isLoading.value) {
+          return CircularProgressIndicator();
+        } else {
+          return Text('hello'.tr, style: TextStyle(fontSize: 20));
+        }
+      }),
+    );
   }
 }

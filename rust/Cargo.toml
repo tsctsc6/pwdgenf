@@ -30,6 +30,7 @@ tracing-subscriber = { version = "0.3.23", features = [
     "fmt",
     "time",
 ] }
+thiserror = "2.0.18"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

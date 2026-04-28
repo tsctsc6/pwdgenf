@@ -2283,6 +2283,7 @@ dependencies = [
  "sea-orm",
  "serde",
  "sha2 0.11.0",
+ "thiserror",
  "time",
  "tokio",
  "tracing",
