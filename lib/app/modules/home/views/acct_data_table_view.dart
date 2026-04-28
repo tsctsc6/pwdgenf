@@ -11,7 +11,7 @@ class AcctDataTableView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (!controller.isDataSourceReady.value) {
+      if (!controller.isReady.value) {
         return const Center(
           child: SizedBox(
             width: 32,

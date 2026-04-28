@@ -6,9 +6,10 @@ import 'package:pwdgenf/src/rust/api/read_all_acct_data.dart';
 import 'package:data_table_2/data_table_2.dart';
 
 class HomeController extends GetxController {
+  final isReady = false.obs;
+
   late final AcctDataAsyncDataSource dataSource;
   final PaginatorController paginatorController = PaginatorController();
-  final isDataSourceReady = false.obs;
 
   final TextEditingController searchInputController = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -22,13 +23,13 @@ class HomeController extends GetxController {
         return;
       }
       dataSource = AcctDataAsyncDataSource(controller: this);
-      isDataSourceReady.value = true;
     });
   }
 
   @override
   void onReady() {
     super.onReady();
+    isReady.value = true;
   }
 
   @override
