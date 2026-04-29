@@ -23,26 +23,31 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Paths.SETTINGS,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Paths.EDIT_ACCT,
       page: () => const EditAcctView(),
       binding: EditAcctBinding(),
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Paths.ADD_ACCT,
       page: () => const AddAcctView(),
       binding: AddAcctBinding(),
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Paths.ACCT_DETAIL,
       page: () => const AcctDetailView(),
       binding: AcctDetailBinding(),
+      transition: Transition.cupertino,
     ),
   ];
 }

@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1771973506;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -455547351;
 
 // Section: executor
 
@@ -179,6 +179,47 @@ fn wire__crate__api__init__init_rust_logger_impl(
         },
     )
 }
+fn wire__crate__api__read_acct_data__read_acct_data_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "read_acct_data",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_app_support_directory = <String>::sse_decode(&mut deserializer);
+            let api_id = <i32>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::clean_error::CleanError>(
+                    (move || async move {
+                        let output_ok = crate::api::read_acct_data::read_acct_data(
+                            api_app_support_directory,
+                            api_id,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -249,6 +290,13 @@ impl SseDecode for crate::api::read_all_acct_data::AcctDataPartialModel {
     }
 }
 
+impl SseDecode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u8().unwrap() != 0
+    }
+}
+
 impl SseDecode for crate::clean_error::CleanError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -300,6 +348,36 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for crate::api::read_acct_data::ReadAcctDataResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <i32>::sse_decode(deserializer);
+        let mut var_userName = <String>::sse_decode(deserializer);
+        let mut var_platform = <String>::sse_decode(deserializer);
+        let mut var_remark = <String>::sse_decode(deserializer);
+        let mut var_nonceOffset = <u32>::sse_decode(deserializer);
+        let mut var_useUpLetter = <bool>::sse_decode(deserializer);
+        let mut var_useLowLetter = <bool>::sse_decode(deserializer);
+        let mut var_useNumber = <bool>::sse_decode(deserializer);
+        let mut var_useSpChar = <bool>::sse_decode(deserializer);
+        let mut var_pwdLen = <u32>::sse_decode(deserializer);
+        let mut var_updatedAt = <String>::sse_decode(deserializer);
+        return crate::api::read_acct_data::ReadAcctDataResult {
+            id: var_id,
+            user_name: var_userName,
+            platform: var_platform,
+            remark: var_remark,
+            nonce_offset: var_nonceOffset,
+            use_up_letter: var_useUpLetter,
+            use_low_letter: var_useLowLetter,
+            use_number: var_useNumber,
+            use_sp_char: var_useSpChar,
+            pwd_len: var_pwdLen,
+            updated_at: var_updatedAt,
+        };
+    }
+}
+
 impl SseDecode for crate::api::read_all_acct_data::ReadAllAcctDataResult {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -310,6 +388,13 @@ impl SseDecode for crate::api::read_all_acct_data::ReadAllAcctDataResult {
             total_count: var_totalCount,
             page_content: var_pageContent,
         };
+    }
+}
+
+impl SseDecode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u32::<NativeEndian>().unwrap()
     }
 }
 
@@ -332,13 +417,6 @@ impl SseDecode for () {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
 }
 
-impl SseDecode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_u8().unwrap() != 0
-    }
-}
-
 fn pde_ffi_dispatcher_primary_impl(
     func_id: i32,
     port: flutter_rust_bridge::for_generated::MessagePort,
@@ -350,7 +428,10 @@ fn pde_ffi_dispatcher_primary_impl(
     match func_id {
         1 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
         2 => wire__crate__api__init__init_migrate_impl(port, ptr, rust_vec_len, data_len),
-        5 => wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
+        5 => {
+            wire__crate__api__read_acct_data__read_acct_data_impl(port, ptr, rust_vec_len, data_len)
+        }
+        6 => wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
             port,
             ptr,
             rust_vec_len,
@@ -423,6 +504,36 @@ impl flutter_rust_bridge::IntoIntoDart<crate::clean_error::CleanError>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::read_acct_data::ReadAcctDataResult {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.user_name.into_into_dart().into_dart(),
+            self.platform.into_into_dart().into_dart(),
+            self.remark.into_into_dart().into_dart(),
+            self.nonce_offset.into_into_dart().into_dart(),
+            self.use_up_letter.into_into_dart().into_dart(),
+            self.use_low_letter.into_into_dart().into_dart(),
+            self.use_number.into_into_dart().into_dart(),
+            self.use_sp_char.into_into_dart().into_dart(),
+            self.pwd_len.into_into_dart().into_dart(),
+            self.updated_at.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::read_acct_data::ReadAcctDataResult
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::read_acct_data::ReadAcctDataResult>
+    for crate::api::read_acct_data::ReadAcctDataResult
+{
+    fn into_into_dart(self) -> crate::api::read_acct_data::ReadAcctDataResult {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::read_all_acct_data::ReadAllAcctDataResult {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -457,6 +568,13 @@ impl SseEncode for crate::api::read_all_acct_data::AcctDataPartialModel {
         <i32>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.user_name, serializer);
         <String>::sse_encode(self.platform, serializer);
+    }
+}
+
+impl SseEncode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u8(self as _).unwrap();
     }
 }
 
@@ -502,6 +620,23 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for crate::api::read_acct_data::ReadAcctDataResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.user_name, serializer);
+        <String>::sse_encode(self.platform, serializer);
+        <String>::sse_encode(self.remark, serializer);
+        <u32>::sse_encode(self.nonce_offset, serializer);
+        <bool>::sse_encode(self.use_up_letter, serializer);
+        <bool>::sse_encode(self.use_low_letter, serializer);
+        <bool>::sse_encode(self.use_number, serializer);
+        <bool>::sse_encode(self.use_sp_char, serializer);
+        <u32>::sse_encode(self.pwd_len, serializer);
+        <String>::sse_encode(self.updated_at, serializer);
+    }
+}
+
 impl SseEncode for crate::api::read_all_acct_data::ReadAllAcctDataResult {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -510,6 +645,13 @@ impl SseEncode for crate::api::read_all_acct_data::ReadAllAcctDataResult {
             self.page_content,
             serializer,
         );
+    }
+}
+
+impl SseEncode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u32::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -530,13 +672,6 @@ impl SseEncode for u8 {
 impl SseEncode for () {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
-}
-
-impl SseEncode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_u8(self as _).unwrap();
-    }
 }
 
 #[cfg(not(target_family = "wasm"))]

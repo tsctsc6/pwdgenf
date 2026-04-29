@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pwdgenf/app/modules/add_acct/views/add_acct_view.dart';
 import 'package:pwdgenf/app/modules/home/views/acct_data_table_view.dart';
 import 'package:pwdgenf/app/modules/settings/views/settings_view.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -71,10 +72,7 @@ class HomeView extends GetView<HomeController> {
             title: Text('menu_settings'.tr),
             onTap: () {
               Get.back(); // close the drawer on tap
-              Get.to(
-                () => const SettingsView(),
-                transition: Transition.cupertino,
-              );
+              Get.toNamed(Routes.SETTINGS);
             },
           ),
         ],
@@ -94,7 +92,7 @@ class HomeView extends GetView<HomeController> {
   Widget floatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        Get.to(() => const AddAcctView(), transition: Transition.cupertino);
+        Get.toNamed(Routes.ADD_ACCT);
       },
       child: const Icon(Icons.add),
     );

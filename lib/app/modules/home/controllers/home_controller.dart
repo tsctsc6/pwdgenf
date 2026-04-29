@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/modules/acct_detail/views/acct_detail_view.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/api/read_all_acct_data.dart';
@@ -113,7 +114,10 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
       final rows = response.pageContent.map((acct) {
         return DataRow2(
           onTap: () {
-            Get.to(AcctDetailView(), arguments: acct.id, transition: Transition.cupertino);
+            Get.toNamed(
+              Routes.ACCT_DETAIL,
+              arguments: acct.id,
+            );
           },
 
           cells: [

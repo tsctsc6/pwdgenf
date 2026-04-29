@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
-import 'package:pwdgenf/app/modules/home/views/home_view.dart';
 import 'package:pwdgenf/app/my_translations.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
@@ -43,10 +42,8 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'NotoSansSC-VariableFont_wght',
       ),
-      home: HomeView(),
-      initialBinding: BindingsBuilder(() {
-        Get.put(HomeController());
-      }),
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
     );
   }
 }
