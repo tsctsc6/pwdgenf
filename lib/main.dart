@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.blue,
           brightness: Brightness.light,
         ),
+        fontFamily: 'NotoSansSC-VariableFont_wght',
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.blue,
           brightness: Brightness.dark,
         ),
+        fontFamily: 'NotoSansSC-VariableFont_wght',
       ),
       home: HomeView(),
       initialBinding: BindingsBuilder(() {
