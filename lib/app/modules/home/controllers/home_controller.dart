@@ -14,16 +14,24 @@ class HomeController extends GetxController {
   final TextEditingController searchInputController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   var searchTerm = '';
+  // 响应式变量，用于动态显示清除按钮
+  final hasSearchText = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    // 监听文本变化，更新响应式变量
+    searchInputController.addListener(_onSearchTextChanged);
     initDatabase().then((result) {
       if (!result) {
         return;
       }
       dataSource = AcctDataAsyncDataSource(controller: this);
     });
+  }
+
+  void _onSearchTextChanged() {
+    hasSearchText.value = searchInputController.text.isNotEmpty;
   }
 
   @override
