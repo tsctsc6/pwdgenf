@@ -59,7 +59,7 @@ class HomeView extends GetView<HomeController> {
           DrawerHeader(
             decoration: BoxDecoration(color: Get.theme.colorScheme.primary),
             child: Text(
-              'Menu',
+              'menu_text'.tr,
               style: TextStyle(
                 color: Get.theme.colorScheme.onPrimary,
                 fontSize: 24,
@@ -68,7 +68,7 @@ class HomeView extends GetView<HomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: Text('menu_settings'.tr),
             onTap: () {
               Get.back(); // close the drawer on tap
               Get.to(

@@ -12,6 +12,8 @@ class MyTranslations extends Translations {
       'table_header_UserName': 'User Name',
       'table_header_Platform': 'Platform',
       'No data': 'Can\'t find any data',
+      'menu_text': 'Menu',
+      'menu_settings': 'Settings',
     },
     'zh_CN': {
       'hello': '你好 世界',
@@ -22,6 +24,8 @@ class MyTranslations extends Translations {
       'table_header_UserName': '用户名',
       'table_header_Platform': '平台',
       'No data': '找不到任何数据',
+      'menu_text': '菜单',
+      'menu_settings': '设置',
     },
   };
 }
