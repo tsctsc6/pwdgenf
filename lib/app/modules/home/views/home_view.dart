@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pwdgenf/app/modules/add_acct/views/add_acct_view.dart';
 import 'package:pwdgenf/app/modules/home/views/acct_data_table_view.dart';
-import 'package:pwdgenf/app/modules/settings/views/settings_view.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 

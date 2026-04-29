@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/src/rust/api/calculate_password.dart';
 import 'package:pwdgenf/src/rust/api/read_acct_data.dart';
 
 class AcctDetailController extends GetxController {
-  //TODO: Implement AcctDetailController
-
   var id = 0;
   final acctData = Rxn<ReadAcctDataResult>();
+
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController platformController = TextEditingController();
+  final TextEditingController remarkController = TextEditingController();
+  final nonceOffset = 0.obs;
+  final useUpLetter = false.obs;
+  final useLowLetter = false.obs;
+  final useNumber = false.obs;
+  final useSpecialCharacter = false.obs;
+  final pwdLen = 0.obs;
+
+  final TextEditingController mainPasswordController = TextEditingController();
+  final obscureMainPassword = true.obs;
+  final generatedPwd = ''.obs;
 
   @override
   void onInit() {
     id = Get.arguments;
     _readAcctData().then((result) {
-      if (result) {
+      if (!result) {
         return;
       }
+      userNameController.text = acctData.value?.userName ?? '';
+      platformController.text = acctData.value?.platform ?? '';
+      remarkController.text = acctData.value?.remark ?? '';
+      nonceOffset.value = acctData.value?.nonceOffset ?? 0;
+      useUpLetter.value = acctData.value?.useUpLetter ?? false;
+      useLowLetter.value = acctData.value?.useLowLetter ?? false;
+      useNumber.value = acctData.value?.useNumber ?? false;
+      useSpecialCharacter.value = acctData.value?.useSpChar ?? false;
+      pwdLen.value = acctData.value?.pwdLen ?? 0;
     });
     super.onInit();
   }
@@ -27,15 +49,15 @@ class AcctDetailController extends GetxController {
 
   @override
   void onClose() {
+    userNameController.dispose();
+    platformController.dispose();
+    remarkController.dispose();
     super.onClose();
   }
 
   /// Returns true if successful, false otherwise.
   Future<bool> _readAcctData() async {
     try {
-      await Future.delayed(
-        const Duration(seconds: 1),
-      ); // Simulate loading delay
       final appEnvService = Get.find<AppEnvService>();
       final result = await readAcctData(
         appSupportDirectory: appEnvService.applicationSupportDirectory,
@@ -51,5 +73,22 @@ class AcctDetailController extends GetxController {
       );
       return false;
     }
+  }
+
+  Future<void> onGeneratePwd() async {
+    final result = await calculatePassword(
+      request: Request(
+        userName: userNameController.text,
+        platform: platformController.text,
+        nonceOffset: nonceOffset.value,
+        useUpLetter: useUpLetter.value,
+        useLowLetter: useLowLetter.value,
+        useNumber: useNumber.value,
+        useSpChar: useSpecialCharacter.value,
+        pwdLen: pwdLen.value,
+        mainPassword: mainPasswordController.text,
+      ),
+    );
+    generatedPwd.value = result;
   }
 }
