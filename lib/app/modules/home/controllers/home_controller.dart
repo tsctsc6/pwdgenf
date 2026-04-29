@@ -14,13 +14,11 @@ class HomeController extends GetxController {
   final TextEditingController searchInputController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   var searchTerm = '';
-  // 响应式变量，用于动态显示清除按钮
   final hasSearchText = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // 监听文本变化，更新响应式变量
     searchInputController.addListener(_onSearchTextChanged);
     initDatabase().then((result) {
       if (!result) {
@@ -115,8 +113,12 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
         return DataRow(
           cells: [
             DataCell(Text(acct.id.toString())),
-            DataCell(Text(acct.userName)),
-            DataCell(Text(acct.platform)),
+            DataCell(
+              buildHighlightedText(acct.userName, controller.searchTerm),
+            ),
+            DataCell(
+              buildHighlightedText(acct.platform, controller.searchTerm),
+            ),
           ],
         );
       }).toList();
@@ -127,4 +129,32 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
       rethrow;
     }
   }
+}
+
+Widget buildHighlightedText(String text, String keyword) {
+  if (!text.contains(keyword)) {
+    return Text(text);
+  }
+
+  List<String> parts = text.split(keyword);
+  List<TextSpan> spans = [];
+
+  for (int i = 0; i < parts.length; i++) {
+    if (parts[i].isNotEmpty) {
+      spans.add(TextSpan(text: parts[i]));
+    }
+    if (i < parts.length - 1) {
+      spans.add(
+        TextSpan(
+          text: keyword,
+          style: TextStyle(
+            color: Get.theme.colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+  }
+
+  return Text.rich(TextSpan(children: spans));
 }
