@@ -8,6 +8,7 @@ abstract class Routes {
   static const SETTINGS = _Paths.SETTINGS;
   static const EDIT_ACCT = _Paths.EDIT_ACCT;
   static const ADD_ACCT = _Paths.ADD_ACCT;
+  static const ACCT_DETAIL = _Paths.ACCT_DETAIL;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SETTINGS = '/settings';
   static const EDIT_ACCT = '/edit-acct';
   static const ADD_ACCT = '/add-acct';
+  static const ACCT_DETAIL = '/acct-detail';
 }

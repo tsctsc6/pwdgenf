@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/acct_detail/bindings/acct_detail_binding.dart';
+import '../modules/acct_detail/views/acct_detail_view.dart';
 import '../modules/add_acct/bindings/add_acct_binding.dart';
 import '../modules/add_acct/views/add_acct_view.dart';
 import '../modules/edit_acct/bindings/edit_acct_binding.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.ADD_ACCT,
       page: () => const AddAcctView(),
       binding: AddAcctBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCT_DETAIL,
+      page: () => const AcctDetailView(),
+      binding: AcctDetailBinding(),
     ),
   ];
 }

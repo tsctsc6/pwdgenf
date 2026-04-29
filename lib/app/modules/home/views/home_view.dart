@@ -73,7 +73,7 @@ class HomeView extends GetView<HomeController> {
               Get.back(); // close the drawer on tap
               Get.to(
                 () => const SettingsView(),
-                transition: Transition.rightToLeft,
+                transition: Transition.cupertino,
               );
             },
           ),
@@ -94,7 +94,7 @@ class HomeView extends GetView<HomeController> {
   Widget floatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        Get.to(() => const AddAcctView(), transition: Transition.rightToLeft);
+        Get.to(() => const AddAcctView(), transition: Transition.cupertino);
       },
       child: const Icon(Icons.add),
     );
