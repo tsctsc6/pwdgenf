@@ -54,7 +54,7 @@ class AcctDataTableView extends StatelessWidget {
                 style: TextStyle(color: Get.theme.colorScheme.error),
               ),
             ),
-            empty: Center(child: Text('No data'.tr)),
+            empty: Center(child: Text('no_data'.tr)),
           ),
         );
       }

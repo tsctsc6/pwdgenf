@@ -18,10 +18,11 @@ class AcctDetailView extends GetView<AcctDetailController> {
         title: Obx(() {
           return Row(
             children: [
-              const Text('AcctDetailView'),
+              Text('acct_detail_view'.tr),
               const Spacer(),
               if (controller.acctData.value != null)
                 IconButton(
+                  tooltip: 'edit_text'.tr,
                   onPressed: () => Get.toNamed(Routes.EDIT_ACCT),
                   icon: Icon(Icons.edit_document),
                 ),
@@ -57,7 +58,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'User Name',
+                        labelText: 'user_name_text'.tr,
                       ),
                     ),
                     TextField(
@@ -67,7 +68,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Platform',
+                        labelText: 'platform_text'.tr,
                       ),
                     ),
                     TextField(
@@ -77,7 +78,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Remark',
+                        labelText: 'remark_text'.tr,
                       ),
                     ),
                     SpinBox(
@@ -89,36 +90,36 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       value: controller.acctData.value!.nonceOffset.toDouble(),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Nonce Offset',
+                        labelText: 'nonce_offset'.tr,
                       ),
                     ),
                     SwitchListTile(
-                      title: const Text(
-                        'Use up letter',
+                      title: Text(
+                        'use_up_letter'.tr,
                         style: TextStyle(fontSize: textFontSize),
                       ),
                       value: controller.useUpLetter.value,
                       onChanged: (bool value) {},
                     ),
                     SwitchListTile(
-                      title: const Text(
-                        'Use low letter',
+                      title: Text(
+                        'use_low_letter'.tr,
                         style: TextStyle(fontSize: textFontSize),
                       ),
                       value: controller.useLowLetter.value,
                       onChanged: (bool value) {},
                     ),
                     SwitchListTile(
-                      title: const Text(
-                        'Use number',
+                      title: Text(
+                        'use_number'.tr,
                         style: TextStyle(fontSize: textFontSize),
                       ),
                       value: controller.useNumber.value,
                       onChanged: (bool value) {},
                     ),
                     SwitchListTile(
-                      title: const Text(
-                        'Use special character',
+                      title: Text(
+                        'use_special_character'.tr,
                         style: TextStyle(fontSize: textFontSize),
                       ),
                       value: controller.useSpecialCharacter.value,
@@ -133,13 +134,13 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       value: controller.acctData.value!.pwdLen.toDouble(),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Password Length',
+                        labelText: 'password_length'.tr,
                       ),
                     ),
                     Row(
                       children: [
-                        const Text(
-                          'Updated At: ',
+                        Text(
+                          'updated_at'.tr,
                           style: TextStyle(fontSize: textFontSize),
                         ),
                         SelectableText(
@@ -153,7 +154,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       obscureText: controller.obscureMainPassword.value,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Main Password',
+                        labelText: 'main_password'.tr,
                         suffixIcon: GestureDetector(
                           onTapDown: (_) =>
                               controller.obscureMainPassword.value = false,

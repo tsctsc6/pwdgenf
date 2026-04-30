@@ -57,7 +57,7 @@ class AcctDetailController extends GetxController {
       final appEnvService = Get.find<AppEnvService>();
       final result = await readAcctData(
         appSupportDirectory: appEnvService.applicationSupportDirectory,
-        id: id * 100,
+        id: id,
       );
       acctData.value = result;
       return true;

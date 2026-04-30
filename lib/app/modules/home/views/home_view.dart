@@ -33,6 +33,7 @@ class HomeView extends GetView<HomeController> {
             if (controller.hasSearchText.value) {
               return IconButton(
                 icon: const Icon(Icons.clear),
+                tooltip: 'clear_search_input'.tr,
                 onPressed: () {
                   controller.clearSearchInput();
                 },
