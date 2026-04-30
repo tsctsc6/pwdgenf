@@ -21,43 +21,40 @@ class AcctDataTableView extends StatelessWidget {
         );
       } else {
         return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 70.0),
-            child: AsyncPaginatedDataTable2(
-              columnSpacing: 12,
-              horizontalMargin: 12,
-              minWidth: 600,
-              columns: [
-                DataColumn2(
-                  label: Text('table_header_ID'.tr),
-                  size: ColumnSize.S,
-                ),
-                DataColumn2(
-                  label: Text('table_header_UserName'.tr),
-                  size: ColumnSize.L,
-                ),
-                DataColumn2(
-                  label: Text('table_header_Platform'.tr),
-                  size: ColumnSize.L,
-                ),
-              ],
-              source: controller.dataSource,
-              controller: controller.paginatorController,
-              loading: const Center(
-                child: SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+          child: AsyncPaginatedDataTable2(
+            columnSpacing: 12,
+            horizontalMargin: 12,
+            minWidth: 600,
+            columns: [
+              DataColumn2(
+                label: Text('table_header_ID'.tr),
+                size: ColumnSize.S,
               ),
-              errorBuilder: (e) => Center(
-                child: Text(
-                  '$e',
-                  style: TextStyle(color: Get.theme.colorScheme.error),
-                ),
+              DataColumn2(
+                label: Text('table_header_UserName'.tr),
+                size: ColumnSize.L,
               ),
-              empty: Center(child: Text('No data'.tr)),
+              DataColumn2(
+                label: Text('table_header_Platform'.tr),
+                size: ColumnSize.L,
+              ),
+            ],
+            source: controller.dataSource,
+            controller: controller.paginatorController,
+            loading: const Center(
+              child: SizedBox(
+                width: 32,
+                height: 32,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
             ),
+            errorBuilder: (e) => Center(
+              child: Text(
+                '$e',
+                style: TextStyle(color: Get.theme.colorScheme.error),
+              ),
+            ),
+            empty: Center(child: Text('No data'.tr)),
           ),
         );
       }

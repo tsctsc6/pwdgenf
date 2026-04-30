@@ -11,9 +11,10 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      drawer: drawer(),
       body: body(),
       floatingActionButton: floatingActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 
@@ -50,34 +51,6 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget drawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Get.theme.colorScheme.primary),
-            child: Text(
-              'menu_text'.tr,
-              style: TextStyle(
-                color: Get.theme.colorScheme.onPrimary,
-                fontSize: 24,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: Text('menu_settings'.tr),
-            onTap: () {
-              Get.back(); // close the drawer on tap
-              Get.toNamed(Routes.SETTINGS);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget body() {
     return Center(
       child: Padding(
@@ -93,6 +66,24 @@ class HomeView extends GetView<HomeController> {
         Get.toNamed(Routes.ADD_ACCT);
       },
       child: const Icon(Icons.add),
+    );
+  }
+
+  Widget bottomNavigationBar() {
+    return BottomAppBar(
+      color: Get.theme.colorScheme.primary,
+      child: IconTheme(
+        data: IconThemeData(color: Get.theme.colorScheme.onPrimary),
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              tooltip: 'menu_settings'.tr,
+              icon: const Icon(Icons.settings),
+              onPressed: () => Get.toNamed(Routes.SETTINGS),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

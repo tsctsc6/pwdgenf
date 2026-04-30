@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/calculate_password.dart';
@@ -90,5 +91,9 @@ class AcctDetailController extends GetxController {
       ),
     );
     generatedPwd.value = result;
+  }
+
+  Future<void> onCopy() async {
+    await Clipboard.setData(ClipboardData(text: generatedPwd.value));
   }
 }

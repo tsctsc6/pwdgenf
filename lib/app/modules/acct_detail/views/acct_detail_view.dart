@@ -73,61 +73,37 @@ class AcctDetailView extends GetView<AcctDetailController> {
                         labelText: 'Nonce Offset',
                       ),
                     ),
-                    Row(
-                      spacing: rowSpacing,
-                      children: [
-                        const Text(
-                          'Use up letter',
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                        Switch(
-                          value: controller.useUpLetter.value,
-                          activeThumbColor: Get.theme.colorScheme.primary,
-                          onChanged: (bool value) {},
-                        ),
-                      ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Use up letter',
+                        style: TextStyle(fontSize: textFontSize),
+                      ),
+                      value: controller.useUpLetter.value,
+                      onChanged: (bool value) {},
                     ),
-                    Row(
-                      spacing: rowSpacing,
-                      children: [
-                        const Text(
-                          'Use low letter',
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                        Switch(
-                          value: controller.useLowLetter.value,
-                          activeThumbColor: Get.theme.colorScheme.primary,
-                          onChanged: (bool value) {},
-                        ),
-                      ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Use low letter',
+                        style: TextStyle(fontSize: textFontSize),
+                      ),
+                      value: controller.useLowLetter.value,
+                      onChanged: (bool value) {},
                     ),
-                    Row(
-                      spacing: rowSpacing,
-                      children: [
-                        const Text(
-                          'Use number',
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                        Switch(
-                          value: controller.useNumber.value,
-                          activeThumbColor: Get.theme.colorScheme.primary,
-                          onChanged: (bool value) => {},
-                        ),
-                      ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Use number',
+                        style: TextStyle(fontSize: textFontSize),
+                      ),
+                      value: controller.useNumber.value,
+                      onChanged: (bool value) {},
                     ),
-                    Row(
-                      spacing: rowSpacing,
-                      children: [
-                        const Text(
-                          'Use special character',
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                        Switch(
-                          value: controller.useSpecialCharacter.value,
-                          activeThumbColor: Get.theme.colorScheme.primary,
-                          onChanged: (bool value) => {},
-                        ),
-                      ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Use special character',
+                        style: TextStyle(fontSize: textFontSize),
+                      ),
+                      value: controller.useSpecialCharacter.value,
+                      onChanged: (bool value) {},
                     ),
                     SpinBox(
                       readOnly: true,
@@ -178,13 +154,18 @@ class AcctDetailView extends GetView<AcctDetailController> {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          'Generated Password: ',
+                        Text(
+                          'generated_password_text'.tr,
                           style: TextStyle(fontSize: textFontSize),
                         ),
                         SelectableText(
                           controller.generatedPwd.value,
                           style: TextStyle(fontSize: textFontSize),
+                        ),
+                        IconButton(
+                          tooltip: 'copy_text'.tr,
+                          icon: const Icon(Icons.copy),
+                          onPressed: () => controller.onCopy(),
                         ),
                       ],
                     ),
