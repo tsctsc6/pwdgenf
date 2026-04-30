@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 import 'package:get/get.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
 
 import '../controllers/acct_detail_controller.dart';
 
@@ -13,7 +14,19 @@ class AcctDetailView extends GetView<AcctDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AcctDetailView'), centerTitle: true),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            const Text('AcctDetailView'),
+            Spacer(),
+            IconButton(
+              onPressed: () => Get.toNamed(Routes.EDIT_ACCT),
+              icon: Icon(Icons.edit_document),
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -38,6 +51,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       controller: controller.userNameController,
                       readOnly: true,
                       obscureText: false,
+                      showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'User Name',
@@ -47,6 +61,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       controller: controller.platformController,
                       readOnly: true,
                       obscureText: false,
+                      showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Platform',
@@ -56,6 +71,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
                       controller: controller.remarkController,
                       readOnly: true,
                       obscureText: false,
+                      showCursor: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Remark',
