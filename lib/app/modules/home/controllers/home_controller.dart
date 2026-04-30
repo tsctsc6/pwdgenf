@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pwdgenf/app/modules/acct_detail/views/acct_detail_view.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
@@ -8,7 +7,7 @@ import 'package:pwdgenf/src/rust/api/read_all_acct_data.dart';
 import 'package:data_table_2/data_table_2.dart';
 
 class HomeController extends GetxController {
-  final isReady = false.obs;
+  final isReady = true.obs;
 
   late final AcctDataAsyncDataSource dataSource;
   final PaginatorController paginatorController = PaginatorController();
@@ -114,10 +113,7 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
       final rows = response.pageContent.map((acct) {
         return DataRow2(
           onTap: () {
-            Get.toNamed(
-              Routes.ACCT_DETAIL,
-              arguments: acct.id,
-            );
+            Get.toNamed(Routes.ACCT_DETAIL, arguments: acct.id);
           },
 
           cells: [
