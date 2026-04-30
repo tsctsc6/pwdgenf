@@ -57,15 +57,20 @@ class AcctDetailController extends GetxController {
       final appEnvService = Get.find<AppEnvService>();
       final result = await readAcctData(
         appSupportDirectory: appEnvService.applicationSupportDirectory,
-        id: id,
+        id: id * 100,
       );
       acctData.value = result;
       return true;
     } catch (e) {
       debugPrint('Error in readAcctData: $e');
-      Get.snackbar(
-        "Error",
-        "An unexpected error occurred while reading account data.",
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text("$e"),
+          actions: [
+            TextButton(child: const Text("Close"), onPressed: () => Get.back()),
+          ],
+        ),
       );
       return false;
     }

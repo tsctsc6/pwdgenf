@@ -57,11 +57,14 @@ class HomeController extends GetxController {
       return true;
     } catch (e) {
       debugPrint('Error in InitDatabase: $e');
-      Get.snackbar(
-        "Error in InitDatabase",
-        e.toString(),
-        colorText: Get.theme.colorScheme.error,
-        duration: Duration(seconds: 10),
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text("$e"),
+          actions: [
+            TextButton(child: const Text("Close"), onPressed: () => Get.back()),
+          ],
+        ),
       );
       return false;
     }

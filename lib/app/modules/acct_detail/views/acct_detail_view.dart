@@ -15,16 +15,19 @@ class AcctDetailView extends GetView<AcctDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            const Text('AcctDetailView'),
-            Spacer(),
-            IconButton(
-              onPressed: () => Get.toNamed(Routes.EDIT_ACCT),
-              icon: Icon(Icons.edit_document),
-            ),
-          ],
-        ),
+        title: Obx(() {
+          return Row(
+            children: [
+              const Text('AcctDetailView'),
+              const Spacer(),
+              if (controller.acctData.value != null)
+                IconButton(
+                  onPressed: () => Get.toNamed(Routes.EDIT_ACCT),
+                  icon: Icon(Icons.edit_document),
+                ),
+            ],
+          );
+        }),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
