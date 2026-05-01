@@ -42,14 +42,15 @@ class AcctDetailView extends GetView<AcctDetailController> {
                 return Column(
                   spacing: 16.0,
                   children: [
-                    Row(
-                      children: [
-                        Text('Id: ', style: TextStyle(fontSize: textFontSize)),
-                        SelectableText(
-                          '${controller.acctData.value!.id}',
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                      ],
+                    TextField(
+                      controller: controller.idController,
+                      readOnly: true,
+                      obscureText: false,
+                      showCursor: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Id',
+                      ),
                     ),
                     TextField(
                       controller: controller.userNameController,
@@ -137,17 +138,15 @@ class AcctDetailView extends GetView<AcctDetailController> {
                         labelText: 'password_length'.tr,
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'updated_at'.tr,
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                        SelectableText(
-                          controller.acctData.value!.updatedAt,
-                          style: TextStyle(fontSize: textFontSize),
-                        ),
-                      ],
+                    TextField(
+                      controller: controller.updatedAtController,
+                      readOnly: true,
+                      obscureText: false,
+                      showCursor: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'updated_at'.tr,
+                      ),
                     ),
                     TextField(
                       controller: controller.mainPasswordController,
@@ -182,11 +181,12 @@ class AcctDetailView extends GetView<AcctDetailController> {
                           controller.generatedPwd.value,
                           style: TextStyle(fontSize: textFontSize),
                         ),
-                        IconButton(
-                          tooltip: 'copy_text'.tr,
-                          icon: const Icon(Icons.copy),
-                          onPressed: () => controller.onCopy(),
-                        ),
+                        if (controller.generatedPwd.isNotEmpty)
+                          IconButton(
+                            tooltip: 'copy_text'.tr,
+                            icon: const Icon(Icons.copy),
+                            onPressed: () => controller.onCopy(),
+                          ),
                       ],
                     ),
                   ],

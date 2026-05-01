@@ -9,6 +9,7 @@ class AcctDetailController extends GetxController {
   var id = 0;
   final acctData = Rxn<ReadAcctDataResult>();
 
+  final TextEditingController idController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController platformController = TextEditingController();
   final TextEditingController remarkController = TextEditingController();
@@ -18,6 +19,7 @@ class AcctDetailController extends GetxController {
   final useNumber = false.obs;
   final useSpecialCharacter = false.obs;
   final pwdLen = 0.obs;
+  final TextEditingController updatedAtController = TextEditingController();
 
   final TextEditingController mainPasswordController = TextEditingController();
   final obscureMainPassword = true.obs;
@@ -30,6 +32,7 @@ class AcctDetailController extends GetxController {
       if (!result) {
         return;
       }
+      idController.text = acctData.value?.id.toString() ?? '';
       userNameController.text = acctData.value?.userName ?? '';
       platformController.text = acctData.value?.platform ?? '';
       remarkController.text = acctData.value?.remark ?? '';
@@ -39,12 +42,14 @@ class AcctDetailController extends GetxController {
       useNumber.value = acctData.value?.useNumber ?? false;
       useSpecialCharacter.value = acctData.value?.useSpChar ?? false;
       pwdLen.value = acctData.value?.pwdLen ?? 0;
+      updatedAtController.text = acctData.value?.updatedAt ?? '';
     });
     super.onInit();
   }
 
   @override
   void onClose() {
+    idController.dispose();
     userNameController.dispose();
     platformController.dispose();
     remarkController.dispose();
@@ -77,6 +82,10 @@ class AcctDetailController extends GetxController {
   }
 
   Future<void> onGeneratePwd() async {
+    if (mainPasswordController.text.isEmpty) {
+      generatedPwd.value = '';
+      return;
+    }
     final result = await calculatePassword(
       request: Request(
         userName: userNameController.text,

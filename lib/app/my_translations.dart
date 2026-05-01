@@ -24,7 +24,7 @@ class MyTranslations extends Translations {
       'use_number': 'Use Number',
       'use_special_character': 'Use Special Character',
       'password_length': 'Password Length',
-      'updated_at': 'Updated At: ',
+      'updated_at': 'Updated At:',
       'main_password': 'Main Password',
 
       // acct_detials
@@ -54,7 +54,7 @@ class MyTranslations extends Translations {
       'use_number': '使用数字',
       'use_special_character': '使用特殊字符',
       'password_length': '密码长度',
-      'updated_at': '更新于：',
+      'updated_at': '更新于',
       'main_password': '主密码',
 
       // acct_detials
