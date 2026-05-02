@@ -4,9 +4,11 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/calculate_password.dart';
+import 'api/delete_acct_data.dart';
 import 'api/init.dart';
 import 'api/read_acct_data.dart';
 import 'api/read_all_acct_data.dart';
+import 'api/update_acct_data.dart';
 import 'clean_error.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -70,7 +72,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -521102913;
+  int get rustContentHash => -628615960;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -83,7 +85,12 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
 abstract class RustLibApi extends BaseApi {
   Future<String> crateApiCalculatePasswordCalculatePassword({
-    required Request request,
+    required CalculatePasswordRequest request,
+  });
+
+  Future<void> crateApiDeleteAcctDataDeleteAcctData({
+    required String appSupportDirectory,
+    required int id,
   });
 
   Future<void> crateApiInitInitApp();
@@ -110,7 +117,10 @@ abstract class RustLibApi extends BaseApi {
     required BigInt pageSize,
   });
 
-  Future<void> crateApiCalculatePasswordValidate({required Request request});
+  Future<void> crateApiUpdateAcctDataUpdateAcctData({
+    required String appSupportDirectory,
+    required UpdateAcctDataRequest request,
+  });
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -123,13 +133,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<String> crateApiCalculatePasswordCalculatePassword({
-    required Request request,
+    required CalculatePasswordRequest request,
   }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_request(request, serializer);
+          sse_encode_box_autoadd_calculate_password_request(
+            request,
+            serializer,
+          );
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -155,6 +168,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> crateApiDeleteAcctDataDeleteAcctData({
+    required String appSupportDirectory,
+    required int id,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(appSupportDirectory, serializer);
+          sse_encode_i_32(id, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_clean_error,
+        ),
+        constMeta: kCrateApiDeleteAcctDataDeleteAcctDataConstMeta,
+        argValues: [appSupportDirectory, id],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiDeleteAcctDataDeleteAcctDataConstMeta =>
+      const TaskConstMeta(
+        debugName: "delete_acct_data",
+        argNames: ["appSupportDirectory", "id"],
+      );
+
+  @override
   Future<void> crateApiInitInitApp() {
     return handler.executeNormal(
       NormalTask(
@@ -163,7 +211,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 2,
+            funcId: 3,
             port: port_,
           );
         },
@@ -193,7 +241,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 3,
+            funcId: 4,
             port: port_,
           );
         },
@@ -220,7 +268,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(applicationSupportDirectory, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -247,7 +295,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(applicationSupportDirectory, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -279,7 +327,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 6,
+            funcId: 7,
             port: port_,
           );
         },
@@ -318,7 +366,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 7,
+            funcId: 8,
             port: port_,
           );
         },
@@ -345,38 +393,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiCalculatePasswordValidate({required Request request}) {
+  Future<void> crateApiUpdateAcctDataUpdateAcctData({
+    required String appSupportDirectory,
+    required UpdateAcctDataRequest request,
+  }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_request(request, serializer);
+          sse_encode_String(appSupportDirectory, serializer);
+          sse_encode_box_autoadd_update_acct_data_request(request, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 8,
+            funcId: 9,
             port: port_,
           );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
+          decodeErrorData: sse_decode_clean_error,
         ),
-        constMeta: kCrateApiCalculatePasswordValidateConstMeta,
-        argValues: [request],
+        constMeta: kCrateApiUpdateAcctDataUpdateAcctDataConstMeta,
+        argValues: [appSupportDirectory, request],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiCalculatePasswordValidateConstMeta =>
-      const TaskConstMeta(debugName: "validate", argNames: ["request"]);
-
-  @protected
-  AnyhowException dco_decode_AnyhowException(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return AnyhowException(raw as String);
-  }
+  TaskConstMeta get kCrateApiUpdateAcctDataUpdateAcctDataConstMeta =>
+      const TaskConstMeta(
+        debugName: "update_acct_data",
+        argNames: ["appSupportDirectory", "request"],
+      );
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -404,9 +453,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Request dco_decode_box_autoadd_request(dynamic raw) {
+  CalculatePasswordRequest dco_decode_box_autoadd_calculate_password_request(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_request(raw);
+    return dco_decode_calculate_password_request(raw);
+  }
+
+  @protected
+  UpdateAcctDataRequest dco_decode_box_autoadd_update_acct_data_request(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_update_acct_data_request(raw);
+  }
+
+  @protected
+  CalculatePasswordRequest dco_decode_calculate_password_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return CalculatePasswordRequest(
+      userName: dco_decode_String(arr[0]),
+      platform: dco_decode_String(arr[1]),
+      nonceOffset: dco_decode_u_32(arr[2]),
+      useUpLetter: dco_decode_bool(arr[3]),
+      useLowLetter: dco_decode_bool(arr[4]),
+      useNumber: dco_decode_bool(arr[5]),
+      useSpChar: dco_decode_bool(arr[6]),
+      pwdLen: dco_decode_u_32(arr[7]),
+      mainPassword: dco_decode_String(arr[8]),
+    );
   }
 
   @protected
@@ -476,25 +554,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Request dco_decode_request(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
-    return Request(
-      userName: dco_decode_String(arr[0]),
-      platform: dco_decode_String(arr[1]),
-      nonceOffset: dco_decode_u_32(arr[2]),
-      useUpLetter: dco_decode_bool(arr[3]),
-      useLowLetter: dco_decode_bool(arr[4]),
-      useNumber: dco_decode_bool(arr[5]),
-      useSpChar: dco_decode_bool(arr[6]),
-      pwdLen: dco_decode_u_32(arr[7]),
-      mainPassword: dco_decode_String(arr[8]),
-    );
-  }
-
-  @protected
   int dco_decode_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -519,10 +578,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_String(deserializer);
-    return AnyhowException(inner);
+  UpdateAcctDataRequest dco_decode_update_acct_data_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    return UpdateAcctDataRequest(
+      id: dco_decode_i_32(arr[0]),
+      userName: dco_decode_String(arr[1]),
+      platform: dco_decode_String(arr[2]),
+      remark: dco_decode_String(arr[3]),
+      nonceOffset: dco_decode_u_32(arr[4]),
+      useUpLetter: dco_decode_bool(arr[5]),
+      useLowLetter: dco_decode_bool(arr[6]),
+      useNumber: dco_decode_bool(arr[7]),
+      useSpChar: dco_decode_bool(arr[8]),
+      pwdLen: dco_decode_u_32(arr[9]),
+    );
   }
 
   @protected
@@ -554,9 +626,46 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Request sse_decode_box_autoadd_request(SseDeserializer deserializer) {
+  CalculatePasswordRequest sse_decode_box_autoadd_calculate_password_request(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_request(deserializer));
+    return (sse_decode_calculate_password_request(deserializer));
+  }
+
+  @protected
+  UpdateAcctDataRequest sse_decode_box_autoadd_update_acct_data_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_update_acct_data_request(deserializer));
+  }
+
+  @protected
+  CalculatePasswordRequest sse_decode_calculate_password_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_userName = sse_decode_String(deserializer);
+    var var_platform = sse_decode_String(deserializer);
+    var var_nonceOffset = sse_decode_u_32(deserializer);
+    var var_useUpLetter = sse_decode_bool(deserializer);
+    var var_useLowLetter = sse_decode_bool(deserializer);
+    var var_useNumber = sse_decode_bool(deserializer);
+    var var_useSpChar = sse_decode_bool(deserializer);
+    var var_pwdLen = sse_decode_u_32(deserializer);
+    var var_mainPassword = sse_decode_String(deserializer);
+    return CalculatePasswordRequest(
+      userName: var_userName,
+      platform: var_platform,
+      nonceOffset: var_nonceOffset,
+      useUpLetter: var_useUpLetter,
+      useLowLetter: var_useLowLetter,
+      useNumber: var_useNumber,
+      useSpChar: var_useSpChar,
+      pwdLen: var_pwdLen,
+      mainPassword: var_mainPassword,
+    );
   }
 
   @protected
@@ -645,31 +754,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Request sse_decode_request(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_userName = sse_decode_String(deserializer);
-    var var_platform = sse_decode_String(deserializer);
-    var var_nonceOffset = sse_decode_u_32(deserializer);
-    var var_useUpLetter = sse_decode_bool(deserializer);
-    var var_useLowLetter = sse_decode_bool(deserializer);
-    var var_useNumber = sse_decode_bool(deserializer);
-    var var_useSpChar = sse_decode_bool(deserializer);
-    var var_pwdLen = sse_decode_u_32(deserializer);
-    var var_mainPassword = sse_decode_String(deserializer);
-    return Request(
-      userName: var_userName,
-      platform: var_platform,
-      nonceOffset: var_nonceOffset,
-      useUpLetter: var_useUpLetter,
-      useLowLetter: var_useLowLetter,
-      useNumber: var_useNumber,
-      useSpChar: var_useSpChar,
-      pwdLen: var_pwdLen,
-      mainPassword: var_mainPassword,
-    );
-  }
-
-  @protected
   int sse_decode_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint32();
@@ -693,12 +777,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_AnyhowException(
-    AnyhowException self,
-    SseSerializer serializer,
+  UpdateAcctDataRequest sse_decode_update_acct_data_request(
+    SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.message, serializer);
+    var var_id = sse_decode_i_32(deserializer);
+    var var_userName = sse_decode_String(deserializer);
+    var var_platform = sse_decode_String(deserializer);
+    var var_remark = sse_decode_String(deserializer);
+    var var_nonceOffset = sse_decode_u_32(deserializer);
+    var var_useUpLetter = sse_decode_bool(deserializer);
+    var var_useLowLetter = sse_decode_bool(deserializer);
+    var var_useNumber = sse_decode_bool(deserializer);
+    var var_useSpChar = sse_decode_bool(deserializer);
+    var var_pwdLen = sse_decode_u_32(deserializer);
+    return UpdateAcctDataRequest(
+      id: var_id,
+      userName: var_userName,
+      platform: var_platform,
+      remark: var_remark,
+      nonceOffset: var_nonceOffset,
+      useUpLetter: var_useUpLetter,
+      useLowLetter: var_useLowLetter,
+      useNumber: var_useNumber,
+      useSpChar: var_useSpChar,
+      pwdLen: var_pwdLen,
+    );
   }
 
   @protected
@@ -725,9 +829,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_request(Request self, SseSerializer serializer) {
+  void sse_encode_box_autoadd_calculate_password_request(
+    CalculatePasswordRequest self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_request(self, serializer);
+    sse_encode_calculate_password_request(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_update_acct_data_request(
+    UpdateAcctDataRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_update_acct_data_request(self, serializer);
+  }
+
+  @protected
+  void sse_encode_calculate_password_request(
+    CalculatePasswordRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.userName, serializer);
+    sse_encode_String(self.platform, serializer);
+    sse_encode_u_32(self.nonceOffset, serializer);
+    sse_encode_bool(self.useUpLetter, serializer);
+    sse_encode_bool(self.useLowLetter, serializer);
+    sse_encode_bool(self.useNumber, serializer);
+    sse_encode_bool(self.useSpChar, serializer);
+    sse_encode_u_32(self.pwdLen, serializer);
+    sse_encode_String(self.mainPassword, serializer);
   }
 
   @protected
@@ -798,20 +931,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_request(Request self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.userName, serializer);
-    sse_encode_String(self.platform, serializer);
-    sse_encode_u_32(self.nonceOffset, serializer);
-    sse_encode_bool(self.useUpLetter, serializer);
-    sse_encode_bool(self.useLowLetter, serializer);
-    sse_encode_bool(self.useNumber, serializer);
-    sse_encode_bool(self.useSpChar, serializer);
-    sse_encode_u_32(self.pwdLen, serializer);
-    sse_encode_String(self.mainPassword, serializer);
-  }
-
-  @protected
   void sse_encode_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint32(self);
@@ -832,5 +951,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  void sse_encode_update_acct_data_request(
+    UpdateAcctDataRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.id, serializer);
+    sse_encode_String(self.userName, serializer);
+    sse_encode_String(self.platform, serializer);
+    sse_encode_String(self.remark, serializer);
+    sse_encode_u_32(self.nonceOffset, serializer);
+    sse_encode_bool(self.useUpLetter, serializer);
+    sse_encode_bool(self.useLowLetter, serializer);
+    sse_encode_bool(self.useNumber, serializer);
+    sse_encode_bool(self.useSpChar, serializer);
+    sse_encode_u_32(self.pwdLen, serializer);
   }
 }

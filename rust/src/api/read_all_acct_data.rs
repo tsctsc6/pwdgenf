@@ -1,13 +1,14 @@
 ﻿use crate::factory::create_db_connection;
 use crate::{clean_error::CleanError, entities::acct_data};
 use anyhow::Context;
+use flutter_rust_bridge::frb;
 use migration::Condition;
 use sea_orm::{
     ColumnTrait, DerivePartialModel, EntityTrait, Order, PaginatorTrait, QueryFilter, QueryOrder,
 };
 use serde::Serialize;
 
-#[flutter_rust_bridge::frb]
+#[frb]
 pub async fn read_all_acct_data(
     app_support_directory: String,
     search_term: String,

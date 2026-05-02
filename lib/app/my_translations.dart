@@ -27,11 +27,24 @@ class MyTranslations extends Translations {
       'updated_at': 'Updated At:',
       'main_password': 'Main Password',
 
+      // button
+      'yes_text': 'Yes',
+      'no_text': 'No',
+      'close_text': 'Close',
+
       // acct_detials
       'generated_password_text': 'Generated Password: ',
       'copy_text': 'Copy',
       'acct_detail_view': 'Account Details',
       'edit_text': 'Edit',
+
+      // edit_acct
+      'edit_detail_view': 'Edit Account',
+      'save_text': 'Save',
+      'delete_text': 'Delete',
+      'saved_text': 'Saved',
+      'deleted_text': 'Deleted',
+      'ensure_delete_text': 'Are you sure you want to delete?',
     },
     'zh_CN': {
       // home page
@@ -57,11 +70,24 @@ class MyTranslations extends Translations {
       'updated_at': '更新于',
       'main_password': '主密码',
 
+      // button
+      'yes_text': '确定',
+      'no_text': '取消',
+      'close_text': '关闭',
+
       // acct_detials
       'generated_password_text': '生成的密码：',
       'copy_text': '复制',
       'acct_detail_view': '账号信息',
       'edit_text': '编辑',
+
+      // edit_acct
+      'edit_detail_view': '编辑账号',
+      'save_text': '保存',
+      'delete_text': '删除',
+      'saved_text': '已保存',
+      'deleted_text': '已删除',
+      'ensure_delete_text': '你确定要删除吗？',
     },
   };
 }

@@ -62,7 +62,7 @@ class HomeController extends GetxController {
           title: const Text('Error'),
           content: Text("$e"),
           actions: [
-            TextButton(child: const Text("Close"), onPressed: () => Get.back()),
+            TextButton(child: Text('close_text'.tr), onPressed: () => Get.back()),
           ],
         ),
       );

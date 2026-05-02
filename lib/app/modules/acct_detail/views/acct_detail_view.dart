@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 import 'package:get/get.dart';
-import 'package:pwdgenf/app/routes/app_pages.dart';
 
 import '../controllers/acct_detail_controller.dart';
 
 class AcctDetailView extends GetView<AcctDetailController> {
   const AcctDetailView({super.key});
   static const textFontSize = 16.0;
-  static const rowSpacing = 8.0;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
               if (controller.acctData.value != null)
                 IconButton(
                   tooltip: 'edit_text'.tr,
-                  onPressed: () => Get.toNamed(Routes.EDIT_ACCT),
+                  onPressed: () => controller.toEditView(),
                   icon: Icon(Icons.edit_document),
                 ),
             ],

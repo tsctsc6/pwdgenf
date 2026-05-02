@@ -3,7 +3,7 @@ use anyhow::anyhow;
 use anyhow::Context;
 use chacha20::cipher::KeyIvInit;
 use chacha20::ChaCha20;
-use serde::Deserialize;
+use flutter_rust_bridge::frb;
 use sha2::{Digest, Sha256};
 
 static UP_LETTER: [char; 26] = [
@@ -19,8 +19,7 @@ static SP_CHAR: [char; 15] = [
     '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=',
 ];
 
-#[derive(Deserialize)]
-pub struct Request {
+pub struct CalculatePasswordRequest {
     pub user_name: String,
     pub platform: String,
     pub nonce_offset: u32,
@@ -32,7 +31,7 @@ pub struct Request {
     pub main_password: String,
 }
 
-pub fn validate(request: &Request) -> anyhow::Result<()> {
+fn validate(request: &CalculatePasswordRequest) -> anyhow::Result<()> {
     if request.user_name.is_empty() {
         Err(anyhow!("user_name is empty"))?;
     }
@@ -56,8 +55,8 @@ pub fn validate(request: &Request) -> anyhow::Result<()> {
     Ok(())
 }
 
-#[flutter_rust_bridge::frb]
-pub async fn calculate_password(request: Request) -> Result<String, CleanError> {
+#[frb]
+pub async fn calculate_password(request: CalculatePasswordRequest) -> Result<String, CleanError> {
     validate(&request)?;
     let hash = Sha256::digest(
         [

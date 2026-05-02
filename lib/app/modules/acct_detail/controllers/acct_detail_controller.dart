@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 import 'package:pwdgenf/src/rust/api/calculate_password.dart';
 import 'package:pwdgenf/src/rust/api/read_acct_data.dart';
 
 class AcctDetailController extends GetxController {
-  var id = 0;
   final acctData = Rxn<ReadAcctDataResult>();
 
   final TextEditingController idController = TextEditingController();
@@ -27,11 +27,31 @@ class AcctDetailController extends GetxController {
 
   @override
   void onInit() {
-    id = Get.arguments;
-    _readAcctData().then((result) {
-      if (!result) {
-        return;
-      }
+    int id = Get.arguments;
+    _fetchAcctData(id);
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    idController.dispose();
+    userNameController.dispose();
+    platformController.dispose();
+    remarkController.dispose();
+    updatedAtController.dispose();
+    mainPasswordController.dispose();
+    super.onClose();
+  }
+
+  /// Returns true if successful, false otherwise.
+  Future<void> _fetchAcctData(int id) async {
+    try {
+      final appEnvService = Get.find<AppEnvService>();
+      final result = await readAcctData(
+        appSupportDirectory: appEnvService.applicationSupportDirectory,
+        id: id,
+      );
+      acctData.value = result;
       idController.text = acctData.value?.id.toString() ?? '';
       userNameController.text = acctData.value?.userName ?? '';
       platformController.text = acctData.value?.platform ?? '';
@@ -43,29 +63,6 @@ class AcctDetailController extends GetxController {
       useSpecialCharacter.value = acctData.value?.useSpChar ?? false;
       pwdLen.value = acctData.value?.pwdLen ?? 0;
       updatedAtController.text = acctData.value?.updatedAt ?? '';
-    });
-    super.onInit();
-  }
-
-  @override
-  void onClose() {
-    idController.dispose();
-    userNameController.dispose();
-    platformController.dispose();
-    remarkController.dispose();
-    super.onClose();
-  }
-
-  /// Returns true if successful, false otherwise.
-  Future<bool> _readAcctData() async {
-    try {
-      final appEnvService = Get.find<AppEnvService>();
-      final result = await readAcctData(
-        appSupportDirectory: appEnvService.applicationSupportDirectory,
-        id: id,
-      );
-      acctData.value = result;
-      return true;
     } catch (e) {
       debugPrint('Error in readAcctData: $e');
       Get.dialog(
@@ -73,11 +70,10 @@ class AcctDetailController extends GetxController {
           title: const Text('Error'),
           content: Text("$e"),
           actions: [
-            TextButton(child: const Text("Close"), onPressed: () => Get.back()),
+            TextButton(child: Text('close_text'.tr), onPressed: () => Get.back()),
           ],
         ),
       );
-      return false;
     }
   }
 
@@ -87,7 +83,7 @@ class AcctDetailController extends GetxController {
       return;
     }
     final result = await calculatePassword(
-      request: Request(
+      request: CalculatePasswordRequest(
         userName: userNameController.text,
         platform: platformController.text,
         nonceOffset: nonceOffset.value,
@@ -104,5 +100,27 @@ class AcctDetailController extends GetxController {
 
   Future<void> onCopy() async {
     await Clipboard.setData(ClipboardData(text: generatedPwd.value));
+  }
+
+  Future<void> toEditView() async {
+    final result = await Get.toNamed(
+      Routes.EDIT_ACCT,
+      arguments: {
+        'id': idController.text,
+        'userName': userNameController.text,
+        'platform': platformController.text,
+        'remark': remarkController.text,
+        'nonceOffset': nonceOffset.value,
+        'useUpLetter': useUpLetter.value,
+        'useLowLetter': useLowLetter.value,
+        'useNumber': useNumber.value,
+        'useSpChar': useSpecialCharacter.value,
+        'pwdLen': pwdLen.value,
+      },
+    );
+    if (result == null || result == false) return;
+    final id = acctData.value?.id ?? 0;
+    acctData.value = null;
+    await _fetchAcctData(id);
   }
 }

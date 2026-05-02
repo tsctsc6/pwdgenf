@@ -1,10 +1,11 @@
 ﻿use crate::factory::create_db_connection;
 use crate::{clean_error::CleanError, entities::acct_data};
 use anyhow::Context;
+use flutter_rust_bridge::frb;
 use sea_orm::{DerivePartialModel, EntityTrait};
 use serde::Serialize;
 
-#[flutter_rust_bridge::frb]
+#[frb]
 pub async fn read_acct_data(
     app_support_directory: String,
     id: i32,

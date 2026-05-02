@@ -1,17 +1,18 @@
 use std::{fs, path::Path};
 
 use anyhow::Context;
+use flutter_rust_bridge::frb;
 use migration::{Migrator, MigratorTrait};
 
 use crate::{clean_error::CleanError, factory::create_db_connection, logger::init_logger};
 
-#[flutter_rust_bridge::frb(init)]
+#[frb(init)]
 pub fn init_app() {
     // Default utilities - feel free to customize
     flutter_rust_bridge::setup_default_user_utils();
 }
 
-#[flutter_rust_bridge::frb(sync)]
+#[frb(sync)]
 pub fn init_path(application_support_directory: String) -> Result<(), CleanError> {
     eprintln!(
         "Initializing application with support directory: {}",
@@ -22,7 +23,7 @@ pub fn init_path(application_support_directory: String) -> Result<(), CleanError
     Ok(())
 }
 
-#[flutter_rust_bridge::frb(sync)]
+#[frb(sync)]
 pub fn init_rust_logger(application_support_directory: String) -> Result<(), CleanError> {
     let log_dir = Path::new(&application_support_directory).join("logs");
     let log_dir = log_dir
@@ -32,7 +33,7 @@ pub fn init_rust_logger(application_support_directory: String) -> Result<(), Cle
     Ok(())
 }
 
-#[flutter_rust_bridge::frb]
+#[frb]
 pub async fn init_migrate(application_support_directory: String) -> Result<(), CleanError> {
     let db = create_db_connection(&application_support_directory).await?;
     Migrator::up(&db, None)
