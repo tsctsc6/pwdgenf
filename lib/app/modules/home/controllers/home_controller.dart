@@ -62,7 +62,10 @@ class HomeController extends GetxController {
           title: const Text('Error'),
           content: Text("$e"),
           actions: [
-            TextButton(child: Text('close_text'.tr), onPressed: () => Get.back()),
+            TextButton(
+              child: Text('close_text'.tr),
+              onPressed: () => Get.back(),
+            ),
           ],
         ),
       );
@@ -70,12 +73,17 @@ class HomeController extends GetxController {
     }
   }
 
-  void refreshTable() {
+  void goToFirstPageAndRefreshTable() {
     searchTerm = searchInputController.text;
     paginatorController.goToFirstPage();
     dataSource.refreshDatasource();
     debugPrint('Refreshing table with search term: $searchTerm');
-    debugPrint("hashCode: ${dataSource.hashCode.toString()}");
+  }
+
+  void refreshTable() {
+    searchTerm = searchInputController.text;
+    dataSource.refreshDatasource();
+    debugPrint('Refreshing table with search term: $searchTerm');
   }
 
   void clearSearchInput() {
@@ -93,21 +101,31 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
   // getRows will be called by AsyncPaginatedDataTable2 when it needs to fetch a new page of data.
   @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
-    debugPrint("hashCode: ${hashCode.toString()}");
+    debugPrint('Requesting rows from $startIndex to ${startIndex + count - 1}');
     if (startIndex < 0 || count <= 0) {
       return AsyncRowsResponse(0, []);
     }
-    debugPrint('Requesting rows from $startIndex to ${startIndex + count - 1}');
     debugPrint('pageIndex ${startIndex ~/ count + 1}, pageSize $count');
 
     try {
       final appEnvService = Get.find<AppEnvService>();
-      final response = await readAllAcctData(
+      var response = await readAllAcctData(
         appSupportDirectory: appEnvService.applicationSupportDirectory,
         searchTerm: controller.searchTerm,
         pageIndex: BigInt.from(startIndex ~/ count),
         pageSize: BigInt.from(count),
       );
+      // out bound
+      if (response.totalCount != BigInt.zero && response.pageContent.isEmpty) {
+        controller.paginatorController.goToPreviousPage();
+        debugPrint('out bound!');
+        response = await readAllAcctData(
+          appSupportDirectory: appEnvService.applicationSupportDirectory,
+          searchTerm: controller.searchTerm,
+          pageIndex: BigInt.from(startIndex ~/ count) - BigInt.one,
+          pageSize: BigInt.from(count),
+        );
+      }
 
       debugPrint(
         'Received ${response.pageContent.length} rows, totalCount: ${response.totalCount}',
