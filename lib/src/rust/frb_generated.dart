@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/calculate_password.dart';
+import 'api/create_acct_data.dart';
 import 'api/delete_acct_data.dart';
 import 'api/init.dart';
 import 'api/read_acct_data.dart';
@@ -72,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -628615960;
+  int get rustContentHash => 591561184;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -86,6 +87,11 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 abstract class RustLibApi extends BaseApi {
   Future<String> crateApiCalculatePasswordCalculatePassword({
     required CalculatePasswordRequest request,
+  });
+
+  Future<void> crateApiCreateAcctDataCreateAcctData({
+    required String appSupportDirectory,
+    required CreateAcctDataRequest request,
   });
 
   Future<void> crateApiDeleteAcctDataDeleteAcctData({
@@ -120,6 +126,10 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiUpdateAcctDataUpdateAcctData({
     required String appSupportDirectory,
     required UpdateAcctDataRequest request,
+  });
+
+  Future<void> crateApiCreateAcctDataValidate({
+    required CreateAcctDataRequest request,
   });
 }
 
@@ -168,6 +178,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> crateApiCreateAcctDataCreateAcctData({
+    required String appSupportDirectory,
+    required CreateAcctDataRequest request,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(appSupportDirectory, serializer);
+          sse_encode_box_autoadd_create_acct_data_request(request, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_clean_error,
+        ),
+        constMeta: kCrateApiCreateAcctDataCreateAcctDataConstMeta,
+        argValues: [appSupportDirectory, request],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiCreateAcctDataCreateAcctDataConstMeta =>
+      const TaskConstMeta(
+        debugName: "create_acct_data",
+        argNames: ["appSupportDirectory", "request"],
+      );
+
+  @override
   Future<void> crateApiDeleteAcctDataDeleteAcctData({
     required String appSupportDirectory,
     required int id,
@@ -181,7 +226,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 2,
+            funcId: 3,
             port: port_,
           );
         },
@@ -211,7 +256,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 3,
+            funcId: 4,
             port: port_,
           );
         },
@@ -241,7 +286,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 4,
+            funcId: 5,
             port: port_,
           );
         },
@@ -268,7 +313,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(applicationSupportDirectory, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -295,7 +340,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(applicationSupportDirectory, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -327,7 +372,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 7,
+            funcId: 8,
             port: port_,
           );
         },
@@ -366,7 +411,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 8,
+            funcId: 9,
             port: port_,
           );
         },
@@ -406,7 +451,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 9,
+            funcId: 10,
             port: port_,
           );
         },
@@ -426,6 +471,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         debugName: "update_acct_data",
         argNames: ["appSupportDirectory", "request"],
       );
+
+  @override
+  Future<void> crateApiCreateAcctDataValidate({
+    required CreateAcctDataRequest request,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_create_acct_data_request(request, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_clean_error,
+        ),
+        constMeta: kCrateApiCreateAcctDataValidateConstMeta,
+        argValues: [request],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiCreateAcctDataValidateConstMeta =>
+      const TaskConstMeta(debugName: "validate", argNames: ["request"]);
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -458,6 +533,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_calculate_password_request(raw);
+  }
+
+  @protected
+  CreateAcctDataRequest dco_decode_box_autoadd_create_acct_data_request(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_create_acct_data_request(raw);
   }
 
   @protected
@@ -496,6 +579,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw Exception("unreachable");
     }
+  }
+
+  @protected
+  CreateAcctDataRequest dco_decode_create_acct_data_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return CreateAcctDataRequest(
+      userName: dco_decode_String(arr[0]),
+      platform: dco_decode_String(arr[1]),
+      remark: dco_decode_String(arr[2]),
+      nonceOffset: dco_decode_u_32(arr[3]),
+      useUpLetter: dco_decode_bool(arr[4]),
+      useLowLetter: dco_decode_bool(arr[5]),
+      useNumber: dco_decode_bool(arr[6]),
+      useSpChar: dco_decode_bool(arr[7]),
+      pwdLen: dco_decode_u_32(arr[8]),
+    );
   }
 
   @protected
@@ -634,6 +736,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CreateAcctDataRequest sse_decode_box_autoadd_create_acct_data_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_create_acct_data_request(deserializer));
+  }
+
+  @protected
   UpdateAcctDataRequest sse_decode_box_autoadd_update_acct_data_request(
     SseDeserializer deserializer,
   ) {
@@ -680,6 +790,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  CreateAcctDataRequest sse_decode_create_acct_data_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_userName = sse_decode_String(deserializer);
+    var var_platform = sse_decode_String(deserializer);
+    var var_remark = sse_decode_String(deserializer);
+    var var_nonceOffset = sse_decode_u_32(deserializer);
+    var var_useUpLetter = sse_decode_bool(deserializer);
+    var var_useLowLetter = sse_decode_bool(deserializer);
+    var var_useNumber = sse_decode_bool(deserializer);
+    var var_useSpChar = sse_decode_bool(deserializer);
+    var var_pwdLen = sse_decode_u_32(deserializer);
+    return CreateAcctDataRequest(
+      userName: var_userName,
+      platform: var_platform,
+      remark: var_remark,
+      nonceOffset: var_nonceOffset,
+      useUpLetter: var_useUpLetter,
+      useLowLetter: var_useLowLetter,
+      useNumber: var_useNumber,
+      useSpChar: var_useSpChar,
+      pwdLen: var_pwdLen,
+    );
   }
 
   @protected
@@ -838,6 +975,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_create_acct_data_request(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_update_acct_data_request(
     UpdateAcctDataRequest self,
     SseSerializer serializer,
@@ -871,6 +1017,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_String(message, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.userName, serializer);
+    sse_encode_String(self.platform, serializer);
+    sse_encode_String(self.remark, serializer);
+    sse_encode_u_32(self.nonceOffset, serializer);
+    sse_encode_bool(self.useUpLetter, serializer);
+    sse_encode_bool(self.useLowLetter, serializer);
+    sse_encode_bool(self.useNumber, serializer);
+    sse_encode_bool(self.useSpChar, serializer);
+    sse_encode_u_32(self.pwdLen, serializer);
   }
 
   @protected

@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -628615960;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 591561184;
 
 // Section: executor
 
@@ -78,6 +78,49 @@ fn wire__crate__api__calculate_password__calculate_password_impl(
                     (move || async move {
                         let output_ok =
                             crate::api::calculate_password::calculate_password(api_request).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__create_acct_data__create_acct_data_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "create_acct_data",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_app_support_directory = <String>::sse_decode(&mut deserializer);
+            let api_request = <crate::api::create_acct_data::CreateAcctDataRequest>::sse_decode(
+                &mut deserializer,
+            );
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::clean_error::CleanError>(
+                    (move || async move {
+                        let output_ok = crate::api::create_acct_data::create_acct_data(
+                            api_app_support_directory,
+                            api_request,
+                        )
+                        .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -389,6 +432,41 @@ fn wire__crate__api__update_acct_data__update_acct_data_impl(
         },
     )
 }
+fn wire__crate__api__create_acct_data__validate_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "validate",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_request = <crate::api::create_acct_data::CreateAcctDataRequest>::sse_decode(
+                &mut deserializer,
+            );
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, crate::clean_error::CleanError>((move || {
+                    let output_ok = crate::api::create_acct_data::validate(&api_request)?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 
 // Section: dart2rust
 
@@ -462,6 +540,32 @@ impl SseDecode for crate::clean_error::CleanError {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for crate::api::create_acct_data::CreateAcctDataRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_userName = <String>::sse_decode(deserializer);
+        let mut var_platform = <String>::sse_decode(deserializer);
+        let mut var_remark = <String>::sse_decode(deserializer);
+        let mut var_nonceOffset = <u32>::sse_decode(deserializer);
+        let mut var_useUpLetter = <bool>::sse_decode(deserializer);
+        let mut var_useLowLetter = <bool>::sse_decode(deserializer);
+        let mut var_useNumber = <bool>::sse_decode(deserializer);
+        let mut var_useSpChar = <bool>::sse_decode(deserializer);
+        let mut var_pwdLen = <u32>::sse_decode(deserializer);
+        return crate::api::create_acct_data::CreateAcctDataRequest {
+            user_name: var_userName,
+            platform: var_platform,
+            remark: var_remark,
+            nonce_offset: var_nonceOffset,
+            use_up_letter: var_useUpLetter,
+            use_low_letter: var_useLowLetter,
+            use_number: var_useNumber,
+            use_sp_char: var_useSpChar,
+            pwd_len: var_pwdLen,
+        };
     }
 }
 
@@ -610,29 +714,36 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        2 => wire__crate__api__delete_acct_data__delete_acct_data_impl(
+        2 => wire__crate__api__create_acct_data__create_acct_data_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        3 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
-        4 => wire__crate__api__init__init_migrate_impl(port, ptr, rust_vec_len, data_len),
-        7 => {
+        3 => wire__crate__api__delete_acct_data__delete_acct_data_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        4 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
+        5 => wire__crate__api__init__init_migrate_impl(port, ptr, rust_vec_len, data_len),
+        8 => {
             wire__crate__api__read_acct_data__read_acct_data_impl(port, ptr, rust_vec_len, data_len)
         }
-        8 => wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
+        9 => wire__crate__api__read_all_acct_data__read_all_acct_data_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        9 => wire__crate__api__update_acct_data__update_acct_data_impl(
+        10 => wire__crate__api__update_acct_data__update_acct_data_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
+        11 => wire__crate__api__create_acct_data__validate_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -645,8 +756,8 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        5 => wire__crate__api__init__init_path_impl(ptr, rust_vec_len, data_len),
-        6 => wire__crate__api__init__init_rust_logger_impl(ptr, rust_vec_len, data_len),
+        6 => wire__crate__api__init__init_path_impl(ptr, rust_vec_len, data_len),
+        7 => wire__crate__api__init__init_rust_logger_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -724,6 +835,34 @@ impl flutter_rust_bridge::IntoIntoDart<crate::clean_error::CleanError>
     for crate::clean_error::CleanError
 {
     fn into_into_dart(self) -> crate::clean_error::CleanError {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::create_acct_data::CreateAcctDataRequest {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.user_name.into_into_dart().into_dart(),
+            self.platform.into_into_dart().into_dart(),
+            self.remark.into_into_dart().into_dart(),
+            self.nonce_offset.into_into_dart().into_dart(),
+            self.use_up_letter.into_into_dart().into_dart(),
+            self.use_low_letter.into_into_dart().into_dart(),
+            self.use_number.into_into_dart().into_dart(),
+            self.use_sp_char.into_into_dart().into_dart(),
+            self.pwd_len.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::create_acct_data::CreateAcctDataRequest
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::create_acct_data::CreateAcctDataRequest>
+    for crate::api::create_acct_data::CreateAcctDataRequest
+{
+    fn into_into_dart(self) -> crate::api::create_acct_data::CreateAcctDataRequest {
         self
     }
 }
@@ -858,6 +997,21 @@ impl SseEncode for crate::clean_error::CleanError {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseEncode for crate::api::create_acct_data::CreateAcctDataRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.user_name, serializer);
+        <String>::sse_encode(self.platform, serializer);
+        <String>::sse_encode(self.remark, serializer);
+        <u32>::sse_encode(self.nonce_offset, serializer);
+        <bool>::sse_encode(self.use_up_letter, serializer);
+        <bool>::sse_encode(self.use_low_letter, serializer);
+        <bool>::sse_encode(self.use_number, serializer);
+        <bool>::sse_encode(self.use_sp_char, serializer);
+        <u32>::sse_encode(self.pwd_len, serializer);
     }
 }
 

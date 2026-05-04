@@ -3,7 +3,6 @@ use crate::{clean_error::CleanError, entities::acct_data};
 use anyhow::Context;
 use flutter_rust_bridge::frb;
 use sea_orm::{DerivePartialModel, EntityTrait};
-use serde::Serialize;
 
 #[frb]
 pub async fn read_acct_data(
@@ -23,7 +22,7 @@ pub async fn read_acct_data(
     Ok(acct_data_to_read)
 }
 
-#[derive(DerivePartialModel, Serialize)]
+#[derive(DerivePartialModel)]
 #[sea_orm(entity = "acct_data::Entity")]
 pub struct ReadAcctDataResult {
     pub id: i32,

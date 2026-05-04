@@ -6,7 +6,6 @@ use migration::Condition;
 use sea_orm::{
     ColumnTrait, DerivePartialModel, EntityTrait, Order, PaginatorTrait, QueryFilter, QueryOrder,
 };
-use serde::Serialize;
 
 #[frb]
 pub async fn read_all_acct_data(
@@ -39,7 +38,7 @@ pub async fn read_all_acct_data(
     Ok(result)
 }
 
-#[derive(DerivePartialModel, Serialize)]
+#[derive(DerivePartialModel)]
 #[sea_orm(entity = "acct_data::Entity")]
 pub struct AcctDataPartialModel {
     pub id: i32,
@@ -47,7 +46,6 @@ pub struct AcctDataPartialModel {
     pub platform: String,
 }
 
-#[derive(Serialize)]
 pub struct ReadAllAcctDataResult {
     pub total_count: u64,
     pub page_content: Vec<AcctDataPartialModel>,

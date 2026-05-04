@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/calculate_password.dart';
+import 'api/create_acct_data.dart';
 import 'api/delete_acct_data.dart';
 import 'api/init.dart';
 import 'api/read_acct_data.dart';
@@ -39,6 +40,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  CreateAcctDataRequest dco_decode_box_autoadd_create_acct_data_request(
+    dynamic raw,
+  );
+
+  @protected
   UpdateAcctDataRequest dco_decode_box_autoadd_update_acct_data_request(
     dynamic raw,
   );
@@ -48,6 +54,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CleanError dco_decode_clean_error(dynamic raw);
+
+  @protected
+  CreateAcctDataRequest dco_decode_create_acct_data_request(dynamic raw);
 
   @protected
   int dco_decode_i_32(dynamic raw);
@@ -98,6 +107,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  CreateAcctDataRequest sse_decode_box_autoadd_create_acct_data_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   UpdateAcctDataRequest sse_decode_box_autoadd_update_acct_data_request(
     SseDeserializer deserializer,
   );
@@ -109,6 +123,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CleanError sse_decode_clean_error(SseDeserializer deserializer);
+
+  @protected
+  CreateAcctDataRequest sse_decode_create_acct_data_request(
+    SseDeserializer deserializer,
+  );
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
@@ -167,6 +186,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_box_autoadd_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_update_acct_data_request(
     UpdateAcctDataRequest self,
     SseSerializer serializer,
@@ -180,6 +205,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_clean_error(CleanError self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
