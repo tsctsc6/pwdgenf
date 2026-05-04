@@ -81,11 +81,14 @@ class EditAcctView extends GetView<EditAcctController> {
                     min: 0,
                     max: 19,
                     direction: Axis.horizontal,
-                    value: controller.nonceOffset.value.toDouble(),
+                    value: controller.nonceOffset.value,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'nonce_offset'.tr,
                     ),
+                    onChanged: (value) => controller.nonceOffset.value = value,
+                    onSubmitted: (value) =>
+                        controller.nonceOffset.value = value,
                   ),
                   SwitchListTile(
                     title: Text(
@@ -127,11 +130,13 @@ class EditAcctView extends GetView<EditAcctController> {
                     min: 0,
                     max: 255,
                     direction: Axis.horizontal,
-                    value: controller.pwdLen.value.toDouble(),
+                    value: controller.pwdLen.value,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'password_length'.tr,
                     ),
+                    onChanged: (value) => controller.pwdLen.value = value,
+                    onSubmitted: (value) => controller.pwdLen.value = value,
                   ),
                   TextField(
                     controller: controller.mainPasswordController,

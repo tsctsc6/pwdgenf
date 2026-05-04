@@ -31,6 +31,8 @@ class MyTranslations extends Translations {
       'yes_text': 'Yes',
       'no_text': 'No',
       'close_text': 'Close',
+      'save_text': 'Save',
+      'delete_text': 'Delete',
 
       // acct_detials
       'generated_password_text': 'Generated Password: ',
@@ -40,8 +42,6 @@ class MyTranslations extends Translations {
 
       // edit_acct
       'edit_detail_view': 'Edit Account',
-      'save_text': 'Save',
-      'delete_text': 'Delete',
       'saved_text': 'Saved',
       'deleted_text': 'Deleted',
       'ensure_delete_text': 'Are you sure you want to delete?',
@@ -74,6 +74,8 @@ class MyTranslations extends Translations {
       'yes_text': '确定',
       'no_text': '取消',
       'close_text': '关闭',
+      'save_text': '保存',
+      'delete_text': '删除',
 
       // acct_detials
       'generated_password_text': '生成的密码：',
@@ -83,11 +85,12 @@ class MyTranslations extends Translations {
 
       // edit_acct
       'edit_detail_view': '编辑账号',
-      'save_text': '保存',
-      'delete_text': '删除',
       'saved_text': '已保存',
       'deleted_text': '已删除',
       'ensure_delete_text': '你确定要删除吗？',
+
+      // add_acct
+      'add_detail_view': '添加账号',
     },
   };
 }

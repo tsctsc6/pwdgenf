@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/modules/acct_detail/controllers/acct_detail_controller.dart';
-import 'package:pwdgenf/app/modules/acct_detail/views/acct_detail_view.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
@@ -15,12 +14,12 @@ class EditAcctController extends GetxController {
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController platformController = TextEditingController();
   final TextEditingController remarkController = TextEditingController();
-  final nonceOffset = 0.obs;
+  final nonceOffset = 0.0.obs;
   final useUpLetter = false.obs;
   final useLowLetter = false.obs;
   final useNumber = false.obs;
   final useSpecialCharacter = false.obs;
-  final pwdLen = 0.obs;
+  final pwdLen = 0.0.obs;
 
   final TextEditingController mainPasswordController = TextEditingController();
   final obscureMainPassword = true.obs;
@@ -33,12 +32,12 @@ class EditAcctController extends GetxController {
     userNameController.text = args['userName'] ?? '';
     platformController.text = args['platform'] ?? '';
     remarkController.text = args['remark'] ?? '';
-    nonceOffset.value = args['nonceOffset'] ?? 0;
+    nonceOffset.value = args['nonceOffset'] ?? 0.0;
     useUpLetter.value = args['useUpLetter'] ?? false;
     useLowLetter.value = args['useLowLetter'] ?? false;
     useNumber.value = args['useNumber'] ?? false;
     useSpecialCharacter.value = args['useSpChar'] ?? false;
-    pwdLen.value = args['pwdLen'] ?? 0;
+    pwdLen.value = args['pwdLen'] ?? 0.0;
     super.onInit();
   }
 
@@ -61,12 +60,12 @@ class EditAcctController extends GetxController {
       request: CalculatePasswordRequest(
         userName: userNameController.text,
         platform: platformController.text,
-        nonceOffset: nonceOffset.value,
+        nonceOffset: nonceOffset.value.toInt(),
         useUpLetter: useUpLetter.value,
         useLowLetter: useLowLetter.value,
         useNumber: useNumber.value,
         useSpChar: useSpecialCharacter.value,
-        pwdLen: pwdLen.value,
+        pwdLen: pwdLen.value.toInt(),
         mainPassword: mainPasswordController.text,
       ),
     );
@@ -84,12 +83,12 @@ class EditAcctController extends GetxController {
       userName: userNameController.text,
       platform: platformController.text,
       remark: remarkController.text,
-      nonceOffset: nonceOffset.value,
+      nonceOffset: nonceOffset.value.toInt(),
       useUpLetter: useUpLetter.value,
       useLowLetter: useLowLetter.value,
       useNumber: useNumber.value,
       useSpChar: useSpecialCharacter.value,
-      pwdLen: pwdLen.value,
+      pwdLen: pwdLen.value.toInt(),
     );
     try {
       await updateAcctData(
