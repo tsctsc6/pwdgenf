@@ -35,7 +35,7 @@ class AcctDetailView extends GetView<AcctDetailController> {
             padding: const EdgeInsets.all(32.0),
             child: Obx(() {
               if (controller.acctData.value == null) {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               } else {
                 return Column(
                   spacing: 16.0,

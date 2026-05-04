@@ -28,7 +28,7 @@ class AcctDetailController extends GetxController {
   @override
   void onInit() {
     int id = Get.arguments;
-    _fetchAcctData(id);
+    refreshAcctData(id);
     super.onInit();
   }
 
@@ -43,8 +43,7 @@ class AcctDetailController extends GetxController {
     super.onClose();
   }
 
-  /// Returns true if successful, false otherwise.
-  Future<void> _fetchAcctData(int id) async {
+  Future<void> refreshAcctData(int id) async {
     try {
       final appEnvService = Get.find<AppEnvService>();
       final result = await readAcctData(
@@ -70,7 +69,10 @@ class AcctDetailController extends GetxController {
           title: const Text('Error'),
           content: Text("$e"),
           actions: [
-            TextButton(child: Text('close_text'.tr), onPressed: () => Get.back()),
+            TextButton(
+              child: Text('close_text'.tr),
+              onPressed: () => Get.back(),
+            ),
           ],
         ),
       );
@@ -103,7 +105,7 @@ class AcctDetailController extends GetxController {
   }
 
   Future<void> toEditView() async {
-    final result = await Get.toNamed(
+    Get.toNamed(
       Routes.EDIT_ACCT,
       arguments: {
         'id': idController.text,
@@ -118,9 +120,5 @@ class AcctDetailController extends GetxController {
         'pwdLen': pwdLen.value,
       },
     );
-    if (result == null || result == false) return;
-    final id = acctData.value?.id ?? 0;
-    acctData.value = null;
-    await _fetchAcctData(id);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pwdgenf/app/modules/acct_detail/controllers/acct_detail_controller.dart';
+import 'package:pwdgenf/app/modules/acct_detail/views/acct_detail_view.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
@@ -94,10 +96,15 @@ class EditAcctController extends GetxController {
         appSupportDirectory: appEnvService.applicationSupportDirectory,
         request: request,
       );
+      if (Get.isRegistered<AcctDetailController>()) {
+        Get.find<AcctDetailController>().refreshAcctData(
+          int.tryParse(idController.text) ?? 0,
+        );
+      }
       if (Get.isRegistered<HomeController>()) {
         Get.find<HomeController>().refreshTable();
       }
-      Get.back(result: true);
+      Get.back();
       Get.rawSnackbar(
         message: 'saved_text'.tr,
         snackPosition: SnackPosition.BOTTOM,
@@ -114,7 +121,10 @@ class EditAcctController extends GetxController {
           title: const Text('Error'),
           content: Text("$e"),
           actions: [
-            TextButton(child: Text('close_text'.tr), onPressed: () => Get.back()),
+            TextButton(
+              child: Text('close_text'.tr),
+              onPressed: () => Get.back(),
+            ),
           ],
         ),
       );

@@ -46,7 +46,7 @@ class HomeView extends GetView<HomeController> {
           }),
         ],
         onSubmitted: (String value) {
-          controller.refreshTable();
+          controller.goToFirstPageAndRefreshTable();
         },
       ),
     );
