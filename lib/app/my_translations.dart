@@ -45,6 +45,18 @@ class MyTranslations extends Translations {
       'saved_text': 'Saved',
       'deleted_text': 'Deleted',
       'ensure_delete_text': 'Are you sure you want to delete?',
+
+      // add_acct
+      'add_detail_view': 'Add Account',
+
+      // settings
+      'settings_view': 'Settings',
+      'backup_and_restore_group_text': 'Backup and restore',
+      'backup_text': 'Backup',
+      'restore_text': 'Restore',
+      'dump_log_text': 'Dump Log',
+      'misc_group_text': 'Misc',
+      'about_text': 'About',
     },
     'zh_CN': {
       // home page
@@ -91,6 +103,15 @@ class MyTranslations extends Translations {
 
       // add_acct
       'add_detail_view': '添加账号',
+
+      // settings
+      'settings_view': '设置',
+      'backup_and_restore_group_text': '备份与还原',
+      'backup_text': '备份',
+      'restore_text': '还原',
+      'dump_log_text': '导出日志',
+      'misc_group_text': '杂项',
+      'about_text': '关于',
     },
   };
 }
