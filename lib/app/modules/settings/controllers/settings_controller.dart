@@ -6,16 +6,29 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
+import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 
 class SettingsController extends GetxController {
   late String appVersion = '';
+
+  final language = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     final appEnvService = Get.find<AppEnvService>();
     appVersion = appEnvService.packageInfo.version;
+    final appConfig = Get.find<AppConfig>();
+    if (appConfig.followSystemLanguage) {
+      if (Get.deviceLocale != null) {
+        language.value = '跟随系统';
+      } else {
+        language.value = 'en-US';
+      }
+    } else {
+      language.value = '${appConfig.languageCode}-${appConfig.countryCode}';
+    }
   }
 
   Future<void> backup() async {
@@ -143,5 +156,78 @@ class SettingsController extends GetxController {
       duration: const Duration(seconds: 3),
       animationDuration: const Duration(milliseconds: 300),
     );
+  }
+
+  Future<void> setLanguage() async {
+    var result = await Get.dialog(
+      AlertDialog(
+        title: Text('语言'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min, // 让弹窗内容紧凑
+          children: [
+            ListTile(
+              title: const Text('跟随系统'),
+              onTap: () {
+                if (Get.deviceLocale != null) {
+                  Get.back(
+                    result: {
+                      'followSystem': true,
+                      'languageCode': '',
+                      'countryCode': '',
+                    },
+                  );
+                } else {
+                  Get.back(
+                    result: {
+                      'followSystem': false,
+                      'languageCode': 'en',
+                      'countryCode': 'US',
+                    },
+                  );
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text('en-US'),
+              onTap: () {
+                Get.back(
+                  result: {
+                    'followSystem': false,
+                    'languageCode': 'en',
+                    'countryCode': 'US',
+                  },
+                );
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text('zh-CN'),
+              onTap: () {
+                Get.back(
+                  result: {
+                    'followSystem': false,
+                    'languageCode': 'zh',
+                    'countryCode': 'CN',
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+    if (result == null) return;
+    if (result['followSystem'] == true) {
+      Get.updateLocale(Get.deviceLocale ?? Locale('en', 'US'));
+    } else {
+      Get.updateLocale(Locale(result['languageCode'], result['countryCode']));
+    }
+    language.value = '${result['languageCode']}-${result['countryCode']}';
+    final appConfig = Get.find<AppConfig>();
+    appConfig.followSystemLanguage = result['followSystem'];
+    appConfig.languageCode = result['languageCode'];
+    appConfig.countryCode = result['countryCode'];
+    await appConfig.toFile();
   }
 }

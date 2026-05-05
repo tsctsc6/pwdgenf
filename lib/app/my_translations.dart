@@ -51,6 +51,8 @@ class MyTranslations extends Translations {
 
       // settings
       'settings_view': 'Settings',
+      'normal_settings_group_text': 'Normal Settings',
+      'language_text': 'Language',
       'backup_and_restore_group_text': 'Backup and restore',
       'backup_text': 'Backup',
       'restore_text': 'Restore',
@@ -108,6 +110,8 @@ class MyTranslations extends Translations {
 
       // settings
       'settings_view': '设置',
+      'normal_settings_group_text': '常规设置',
+      'language_text': '语言',
       'backup_and_restore_group_text': '备份与还原',
       'backup_text': '备份',
       'restore_text': '还原',

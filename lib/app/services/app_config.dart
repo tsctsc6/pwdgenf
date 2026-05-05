@@ -8,9 +8,9 @@ import 'package:toml/toml.dart';
 
 class AppConfig extends GetxService {
   static const configExamplePath = 'assets/config.example.toml';
-  final bool followSystemLanguage;
-  final String languageCode;
-  final String countryCode;
+  bool followSystemLanguage;
+  String languageCode;
+  String countryCode;
 
   AppConfig({
     required this.followSystemLanguage,
@@ -46,5 +46,15 @@ class AppConfig extends GetxService {
       'language_code': languageCode,
       'country_code': countryCode,
     };
+  }
+
+  Future<void> toFile() async {
+    final appEnvService = Get.find<AppEnvService>();
+    final configFile = File(
+      '${appEnvService.applicationSupportDirectory}/config.toml',
+    );
+    final map = toMap();
+    final document = TomlDocument.fromMap(map);
+    await configFile.writeAsString(document.toString());
   }
 }
