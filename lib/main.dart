@@ -8,9 +8,10 @@ import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
-  await Get.putAsync(() async => await AppConfig.fromFile());
+  await Get.putAsync(() => AppConfig.fromFile());
   final appEnvService = Get.find<AppEnvService>();
   try {
     initRustLogger(
