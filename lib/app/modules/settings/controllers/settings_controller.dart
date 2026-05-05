@@ -7,23 +7,6 @@ import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
 
 class SettingsController extends GetxController {
-  //TODO: Implement SettingsController
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   Future<void> backup() async {
     final appEnvService = Get.find<AppEnvService>();
     final srcFile = File(

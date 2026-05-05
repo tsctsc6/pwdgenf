@@ -21,21 +21,6 @@ class AddAcctController extends GetxController {
   final obscureMainPassword = true.obs;
   final generatedPwd = ''.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   Future<void> onGeneratePwd() async {
     if (mainPasswordController.text.isEmpty) {
       generatedPwd.value = '';
