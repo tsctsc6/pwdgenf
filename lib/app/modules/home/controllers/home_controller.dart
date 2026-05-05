@@ -26,17 +26,12 @@ class HomeController extends GetxController {
         return;
       }
       dataSource = AcctDataAsyncDataSource(controller: this);
+      isReady.value = true;
     });
   }
 
   void _onSearchTextChanged() {
     hasSearchText.value = searchInputController.text.isNotEmpty;
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    isReady.value = true;
   }
 
   @override
