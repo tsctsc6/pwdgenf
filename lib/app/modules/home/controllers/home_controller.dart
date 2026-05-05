@@ -138,12 +138,22 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
           },
 
           cells: [
-            DataCell(Text(acct.id.toString())),
+            DataCell(Center(child: Text(acct.id.toString()))),
             DataCell(
-              buildHighlightedText(acct.userName, controller.searchTerm),
+              Center(
+                child: buildHighlightedText(
+                  acct.userName,
+                  controller.searchTerm,
+                ),
+              ),
             ),
             DataCell(
-              buildHighlightedText(acct.platform, controller.searchTerm),
+              Center(
+                child: buildHighlightedText(
+                  acct.platform,
+                  controller.searchTerm,
+                ),
+              ),
             ),
           ],
         );

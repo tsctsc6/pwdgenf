@@ -24,18 +24,18 @@ class AcctDataTableView extends StatelessWidget {
           child: AsyncPaginatedDataTable2(
             columnSpacing: 12,
             horizontalMargin: 12,
-            minWidth: 600,
+            minWidth: 300,
             columns: [
               DataColumn2(
-                label: Text('table_header_ID'.tr),
+                label: Center(child: Text('table_header_ID'.tr)),
                 size: ColumnSize.S,
               ),
               DataColumn2(
-                label: Text('table_header_UserName'.tr),
+                label: Center(child: Text('table_header_UserName'.tr)),
                 size: ColumnSize.L,
               ),
               DataColumn2(
-                label: Text('table_header_Platform'.tr),
+                label: Center(child: Text('table_header_Platform'.tr)),
                 size: ColumnSize.L,
               ),
             ],
