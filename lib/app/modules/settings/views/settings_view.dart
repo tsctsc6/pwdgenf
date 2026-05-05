@@ -28,7 +28,7 @@ class SettingsView extends GetView<SettingsController> {
           ListTile(
             leading: const Icon(Icons.info),
             title: Text('about_text'.tr),
-            onTap: () {},
+            onTap: () => controller.showAbout(),
           ),
         ],
       ),
