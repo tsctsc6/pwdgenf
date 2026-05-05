@@ -14,7 +14,7 @@ class SettingsController extends GetxController {
     );
     final dateTime = DateTime.now();
     final formattedDate = DateFormat('yyyyMMdd-HHmmss').format(dateTime);
-    final result = await FilePicker.saveFile(
+    await FilePicker.saveFile(
       dialogTitle: 'Please select an output file:',
       fileName: 'pwdgenf-$formattedDate.db',
       initialDirectory: appEnvService.downloadDirectory,
