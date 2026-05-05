@@ -57,6 +57,8 @@ class MyTranslations extends Translations {
       'dump_log_text': 'Dump Log',
       'misc_group_text': 'Misc',
       'about_text': 'About',
+      'backuped_text': 'Backuped',
+      'restored_text': 'Restored',
     },
     'zh_CN': {
       // home page
@@ -112,6 +114,8 @@ class MyTranslations extends Translations {
       'dump_log_text': '导出日志',
       'misc_group_text': '杂项',
       'about_text': '关于',
+      'backuped_text': '已备份',
+      'restored_text': '已还原',
     },
   };
 }

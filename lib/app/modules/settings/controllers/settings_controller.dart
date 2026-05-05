@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
@@ -14,7 +15,7 @@ class SettingsController extends GetxController {
     );
     final dateTime = DateTime.now();
     final formattedDate = DateFormat('yyyyMMdd-HHmmss').format(dateTime);
-    await FilePicker.saveFile(
+    final result = await FilePicker.saveFile(
       dialogTitle: 'Please select an output file:',
       fileName: 'pwdgenf-$formattedDate.db',
       initialDirectory: appEnvService.downloadDirectory,
@@ -22,6 +23,18 @@ class SettingsController extends GetxController {
       allowedExtensions: ['db'],
       lockParentWindow: true,
       bytes: await srcFile.readAsBytes(),
+    );
+    if (result == null) {
+      return;
+    }
+    Get.rawSnackbar(
+      message: 'backuped_text'.tr,
+      snackPosition: SnackPosition.BOTTOM,
+      borderRadius: 8,
+      margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      duration: const Duration(seconds: 3),
+      animationDuration: const Duration(milliseconds: 300),
     );
   }
 
@@ -44,5 +57,14 @@ class SettingsController extends GetxController {
     if (Get.isRegistered<HomeController>()) {
       Get.find<HomeController>().goToFirstPageAndRefreshTable();
     }
+    Get.rawSnackbar(
+      message: 'restored_text'.tr,
+      snackPosition: SnackPosition.BOTTOM,
+      borderRadius: 8,
+      margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      duration: const Duration(seconds: 3),
+      animationDuration: const Duration(milliseconds: 300),
+    );
   }
 }
