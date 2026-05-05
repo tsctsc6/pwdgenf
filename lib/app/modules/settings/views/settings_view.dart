@@ -24,11 +24,6 @@ class SettingsView extends GetView<SettingsController> {
             title: Text('restore_text'.tr),
             onTap: () => controller.restore(),
           ),
-          ListTile(
-            leading: const Icon(Icons.upload),
-            title: Text('dump_log_text'.tr),
-            onTap: () => controller.dumpLogs(),
-          ),
           _buildSectionHeader('misc_group_text'.tr),
           ListTile(
             leading: const Icon(Icons.info),
