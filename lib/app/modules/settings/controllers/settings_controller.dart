@@ -22,7 +22,7 @@ class SettingsController extends GetxController {
     final appConfig = Get.find<AppConfig>();
     if (appConfig.followSystemLanguage) {
       if (Get.deviceLocale != null) {
-        language.value = '跟随系统';
+        language.value = 'follow_system_language_text'.tr;
       } else {
         language.value = 'en-US';
       }
@@ -124,7 +124,7 @@ class SettingsController extends GetxController {
                   ),
                   ListTile(
                     leading: const Icon(Icons.public),
-                    title: Text('前往 Github'),
+                    title: Text('go_to_github'.tr),
                     subtitle: Text('https://github.com/tsctsc6/pwdgenf'),
                     onTap: () => tapWebsite(),
                   ),
@@ -148,7 +148,7 @@ class SettingsController extends GetxController {
       ClipboardData(text: 'https://github.com/tsctsc6/pwdgenf'),
     );
     Get.rawSnackbar(
-      message: 'url 已复制'.tr,
+      message: 'url_copied'.tr,
       snackPosition: SnackPosition.BOTTOM,
       borderRadius: 8,
       margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
@@ -161,12 +161,12 @@ class SettingsController extends GetxController {
   Future<void> setLanguage() async {
     var result = await Get.dialog(
       AlertDialog(
-        title: Text('语言'),
+        title: Text('language_text'.tr),
         content: Column(
-          mainAxisSize: MainAxisSize.min, // 让弹窗内容紧凑
+          mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: const Text('跟随系统'),
+              title: Text('follow_system_language_text'.tr),
               onTap: () {
                 if (Get.deviceLocale != null) {
                   Get.back(
@@ -220,10 +220,11 @@ class SettingsController extends GetxController {
     if (result == null) return;
     if (result['followSystem'] == true) {
       Get.updateLocale(Get.deviceLocale ?? Locale('en', 'US'));
+      language.value = 'follow_system_language_text'.tr;
     } else {
       Get.updateLocale(Locale(result['languageCode'], result['countryCode']));
+      language.value = '${result['languageCode']}-${result['countryCode']}';
     }
-    language.value = '${result['languageCode']}-${result['countryCode']}';
     final appConfig = Get.find<AppConfig>();
     appConfig.followSystemLanguage = result['followSystem'];
     appConfig.languageCode = result['languageCode'];

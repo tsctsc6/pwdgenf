@@ -53,6 +53,7 @@ class MyTranslations extends Translations {
       'settings_view': 'Settings',
       'normal_settings_group_text': 'Normal Settings',
       'language_text': 'Language',
+      'follow_system_language_text': 'Follow system',
       'backup_and_restore_group_text': 'Backup and restore',
       'backup_text': 'Backup',
       'restore_text': 'Restore',
@@ -61,6 +62,8 @@ class MyTranslations extends Translations {
       'about_text': 'About',
       'backuped_text': 'Backuped',
       'restored_text': 'Restored',
+      'go_to_github': 'Go to Github',
+      'url_copied': 'URL copied',
     },
     'zh_CN': {
       // home page
@@ -112,6 +115,7 @@ class MyTranslations extends Translations {
       'settings_view': '设置',
       'normal_settings_group_text': '常规设置',
       'language_text': '语言',
+      'follow_system_language_text': '跟随系统',
       'backup_and_restore_group_text': '备份与还原',
       'backup_text': '备份',
       'restore_text': '还原',
@@ -120,6 +124,8 @@ class MyTranslations extends Translations {
       'about_text': '关于',
       'backuped_text': '已备份',
       'restored_text': '已还原',
+      'go_to_github': '前往 Github',
+      'url_copied': 'URL 已复制',
     },
   };
 }

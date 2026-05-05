@@ -13,10 +13,10 @@ class SettingsView extends GetView<SettingsController> {
       appBar: AppBar(title: Text('settings_view'.tr), centerTitle: true),
       body: ListView(
         children: [
-          _buildSectionHeader('常规设置'.tr),
+          _buildSectionHeader('normal_settings_group_text'.tr),
           ListTile(
             leading: const Icon(Icons.language),
-            title: Text('语言'.tr),
+            title: Text('language_text'.tr),
             subtitle: Text(controller.language.value),
             onTap: () => controller.setLanguage(),
           ),
