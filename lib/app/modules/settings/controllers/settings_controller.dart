@@ -21,11 +21,8 @@ class SettingsController extends GetxController {
       type: FileType.custom,
       allowedExtensions: ['db'],
       lockParentWindow: true,
+      bytes: await srcFile.readAsBytes(),
     );
-    if (result == null) {
-      return;
-    }
-    await srcFile.copy(result);
   }
 
   Future<void> restore() async {
@@ -48,6 +45,4 @@ class SettingsController extends GetxController {
       Get.find<HomeController>().goToFirstPageAndRefreshTable();
     }
   }
-
-  Future<void> dumpLogs() async {}
 }
