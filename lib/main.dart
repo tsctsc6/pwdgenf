@@ -10,9 +10,13 @@ Future<void> main() async {
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
   final appEnvService = Get.find<AppEnvService>();
-  initRustLogger(
-    applicationSupportDirectory: appEnvService.applicationSupportDirectory,
-  );
+  try {
+    initRustLogger(
+      applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+    );
+  } on Exception catch (e) {
+    debugPrint(e.toString());
+  }
   runApp(const MyApp());
 }
 
