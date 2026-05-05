@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
@@ -36,29 +37,33 @@ class MyApp extends StatelessWidget {
       locale = Locale(appConfig.languageCode, appConfig.countryCode);
     }
 
-    return GetMaterialApp(
-      title: 'pwdgetf',
-      translations: MyTranslations(),
-      locale: locale,
-      fallbackLocale: Locale('en', 'US'),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.light,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: GetMaterialApp(
+        title: 'pwdgetf',
+        translations: MyTranslations(),
+        locale: locale,
+        fallbackLocale: Locale('en', 'US'),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.light,
+          ),
+          fontFamily: 'NotoSansSC-VariableFont_wght',
         ),
-        fontFamily: 'NotoSansSC-VariableFont_wght',
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+          fontFamily: 'NotoSansSC-VariableFont_wght',
         ),
-        fontFamily: 'NotoSansSC-VariableFont_wght',
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
       ),
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
     );
   }
 }
