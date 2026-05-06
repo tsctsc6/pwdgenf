@@ -109,8 +109,8 @@ class SettingsController extends GetxController {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              '关于',
+            Text(
+              'about_text'.tr,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),

@@ -64,6 +64,10 @@ class MyTranslations extends Translations {
       'restored_text': 'Restored',
       'go_to_github': 'Go to Github',
       'url_copied': 'URL copied',
+
+      // from validation
+      'user_name_can_not_be_empty_text': 'Username can not be emtpy',
+      'platform_can_not_be_empty_text': 'Plarform can not be emtpy',
     },
     'zh_CN': {
       // home page
@@ -126,6 +130,10 @@ class MyTranslations extends Translations {
       'restored_text': '已还原',
       'go_to_github': '前往 Github',
       'url_copied': 'URL 已复制',
+
+      // from validation
+      'user_name_can_not_be_empty_text': '用户名不能为空',
+      'platform_can_not_be_empty_text': '平台不能为空',
     },
   };
 }

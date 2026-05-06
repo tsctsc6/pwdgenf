@@ -59,14 +59,14 @@ class EditAcctController extends GetxController {
 
   String? validateUserName(String? value) {
     if (value == null || value.isEmpty) {
-      return '用户名不能为空';
+      return 'user_name_can_not_be_empty_text'.tr;
     }
     return null;
   }
 
   String? validatePlatform(String? value) {
     if (value == null || value.isEmpty) {
-      return '平台不能为空';
+      return 'platform_can_not_be_empty_text'.tr;
     }
     return null;
   }
