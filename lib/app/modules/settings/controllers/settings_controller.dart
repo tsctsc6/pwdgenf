@@ -39,7 +39,7 @@ class SettingsController extends GetxController {
     final dateTime = DateTime.now();
     final formattedDate = DateFormat('yyyyMMdd-HHmmss').format(dateTime);
     final result = await FilePicker.saveFile(
-      dialogTitle: 'Please select an output file:',
+      dialogTitle: 'backup_text'.tr,
       fileName: 'pwdgenf-$formattedDate.db',
       initialDirectory: appEnvService.downloadDirectory,
       type: FileType.custom,
@@ -64,7 +64,7 @@ class SettingsController extends GetxController {
   Future<void> restore() async {
     final appEnvService = Get.find<AppEnvService>();
     final result = await FilePicker.pickFiles(
-      dialogTitle: 'Please select an input file:',
+      dialogTitle: 'restore_text'.tr,
       initialDirectory: appEnvService.downloadDirectory,
       type: FileType.custom,
       allowedExtensions: ['db'],
