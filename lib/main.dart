@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:pwdgenf/src/rust/api/simple.dart';
+import 'package:get/get.dart';
+import 'package:pwdgenf/app/my_translations.dart';
+import 'package:pwdgenf/app/routes/app_pages.dart';
+import 'package:pwdgenf/app/services/app_config.dart';
+import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
+  await Get.putAsync(() => AppEnvService().init());
+  await Get.putAsync(() => AppConfig.fromFile());
+  final appEnvService = Get.find<AppEnvService>();
+  try {
+    initRustLogger(
+      applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+    );
+  } on Exception catch (e) {
+    debugPrint(e.toString());
+  }
   runApp(const MyApp());
 }
 
@@ -12,14 +28,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('flutter_rust_bridge quickstart')),
-        body: Center(
-          child: Text(
-            'Action: Call Rust `greet("Tom")`\nResult: `${greet(name: "Tom")}`',
+    final appConfig = Get.find<AppConfig>();
+    Locale? locale;
+    if (appConfig.followSystemLanguage) {
+      locale = View.of(context).platformDispatcher.locale;
+    } else {
+      locale = Locale(appConfig.languageCode, appConfig.countryCode);
+    }
+
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: GetMaterialApp(
+        title: 'pwdgetf',
+        translations: MyTranslations(),
+        locale: locale,
+        fallbackLocale: Locale('en', 'US'),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.light,
           ),
+          fontFamily: 'NotoSansSC-VariableFont_wght',
         ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+          fontFamily: 'NotoSansSC-VariableFont_wght',
+        ),
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
       ),
     );
   }

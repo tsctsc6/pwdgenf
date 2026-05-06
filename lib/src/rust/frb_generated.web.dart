@@ -6,7 +6,14 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
-import 'api/simple.dart';
+import 'api/calculate_password.dart';
+import 'api/create_acct_data.dart';
+import 'api/delete_acct_data.dart';
+import 'api/init.dart';
+import 'api/read_acct_data.dart';
+import 'api/read_all_acct_data.dart';
+import 'api/update_acct_data.dart';
+import 'clean_error.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -24,7 +31,57 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  AcctDataPartialModel dco_decode_acct_data_partial_model(dynamic raw);
+
+  @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
+  CalculatePasswordRequest dco_decode_box_autoadd_calculate_password_request(
+    dynamic raw,
+  );
+
+  @protected
+  CreateAcctDataRequest dco_decode_box_autoadd_create_acct_data_request(
+    dynamic raw,
+  );
+
+  @protected
+  UpdateAcctDataRequest dco_decode_box_autoadd_update_acct_data_request(
+    dynamic raw,
+  );
+
+  @protected
+  CalculatePasswordRequest dco_decode_calculate_password_request(dynamic raw);
+
+  @protected
+  CleanError dco_decode_clean_error(dynamic raw);
+
+  @protected
+  CreateAcctDataRequest dco_decode_create_acct_data_request(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
+
+  @protected
+  List<AcctDataPartialModel> dco_decode_list_acct_data_partial_model(
+    dynamic raw,
+  );
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  ReadAcctDataResult dco_decode_read_acct_data_result(dynamic raw);
+
+  @protected
+  ReadAllAcctDataResult dco_decode_read_all_acct_data_result(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -33,10 +90,73 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
+  UpdateAcctDataRequest dco_decode_update_acct_data_request(dynamic raw);
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  AcctDataPartialModel sse_decode_acct_data_partial_model(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  CalculatePasswordRequest sse_decode_box_autoadd_calculate_password_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  CreateAcctDataRequest sse_decode_box_autoadd_create_acct_data_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  UpdateAcctDataRequest sse_decode_box_autoadd_update_acct_data_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  CalculatePasswordRequest sse_decode_calculate_password_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  CleanError sse_decode_clean_error(SseDeserializer deserializer);
+
+  @protected
+  CreateAcctDataRequest sse_decode_create_acct_data_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  List<AcctDataPartialModel> sse_decode_list_acct_data_partial_model(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  ReadAcctDataResult sse_decode_read_acct_data_result(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  ReadAllAcctDataResult sse_decode_read_all_acct_data_result(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -45,13 +165,63 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
+  UpdateAcctDataRequest sse_decode_update_acct_data_request(
+    SseDeserializer deserializer,
+  );
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_acct_data_partial_model(
+    AcctDataPartialModel self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_calculate_password_request(
+    CalculatePasswordRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_update_acct_data_request(
+    UpdateAcctDataRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_calculate_password_request(
+    CalculatePasswordRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_clean_error(CleanError self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_create_acct_data_request(
+    CreateAcctDataRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_acct_data_partial_model(
+    List<AcctDataPartialModel> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_prim_u_8_strict(
@@ -60,16 +230,34 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_read_acct_data_result(
+    ReadAcctDataResult self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_read_all_acct_data_result(
+    ReadAllAcctDataResult self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
 
   @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
+  void sse_encode_update_acct_data_request(
+    UpdateAcctDataRequest self,
+    SseSerializer serializer,
+  );
 }
 
 // Section: wire_class
