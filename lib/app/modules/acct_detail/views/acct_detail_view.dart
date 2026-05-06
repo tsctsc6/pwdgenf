@@ -153,12 +153,8 @@ class AcctDetailView extends GetView<AcctDetailController> {
                         border: OutlineInputBorder(),
                         labelText: 'main_password'.tr,
                         suffixIcon: GestureDetector(
-                          onTapDown: (_) =>
-                              controller.obscureMainPassword.value = false,
-                          onTapUp: (_) =>
-                              controller.obscureMainPassword.value = true,
-                          onTapCancel: () =>
-                              controller.obscureMainPassword.value = true,
+                          onTap: () => controller.obscureMainPassword.value =
+                              !controller.obscureMainPassword.value,
                           child: Icon(
                             controller.obscureMainPassword.value
                                 ? Icons.visibility

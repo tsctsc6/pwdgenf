@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
