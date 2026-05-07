@@ -92,6 +92,11 @@ jobs:
       - name: Install yq
         uses: dcarbone/install-yq-action@v1.3.1
 
+      - name: Set up android signature
+        run: |
+          [System.IO.File]::WriteAllBytes("./android/.jks", [Convert]::FromBase64String("${{ secrets.MY_JKS_BASE64 }}"))
+          [System.IO.File]::WriteAllBytes("./android/key.properties", "${{ secrets.MY_KEY_PROP_BASE64 }}"))
+
       - name: Build
         run: |
           build_workflows/${{ matrix.host_os }}/build.ps1
