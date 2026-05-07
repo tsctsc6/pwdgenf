@@ -20,16 +20,13 @@ class HomeView extends GetView<HomeController> {
 
   PreferredSizeWidget appBar() {
     return AppBar(
-      title: SearchBar(
+      title: TextField(
         controller: controller.searchInputController,
-        hintText: 'search_hint'.tr,
-        constraints: const BoxConstraints(maxHeight: 50),
-        padding: const WidgetStatePropertyAll<EdgeInsets>(
-          EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        ),
-        leading: const Icon(Icons.search),
-        trailing: <Widget>[
-          Obx(() {
+        decoration: InputDecoration(
+          hintText: 'search_hint'.tr,
+          prefixIcon: const Icon(Icons.search),
+          border: const UnderlineInputBorder(),
+          suffixIcon: Obx(() {
             if (controller.hasSearchText.value) {
               return IconButton(
                 icon: const Icon(Icons.clear),
@@ -44,7 +41,7 @@ class HomeView extends GetView<HomeController> {
               return const SizedBox.shrink();
             }
           }),
-        ],
+        ),
         onSubmitted: (String value) {
           controller.goToFirstPageAndRefreshTable();
         },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
@@ -23,8 +24,51 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
+  }
+
+  @override
+  void dispose() {
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
+    super.dispose();
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (_handleEscKeyEvent(event)) return true;
+    return false;
+  }
+
+  bool _handleEscKeyEvent(KeyEvent event) {
+    if (event is! KeyDownEvent ||
+        event.logicalKey != LogicalKeyboardKey.escape) {
+      return false;
+    }
+
+    final primaryFocus = FocusManager.instance.primaryFocus;
+
+    // if there is a focus, and it is a normal FocusNode, this means focus on TextField or Button,
+    // instead of the page focus, which is FocusScopeNode,
+    // unfocus TextField first.
+    if (primaryFocus != null && primaryFocus is! FocusScopeNode) {
+      primaryFocus.unfocus();
+      return true;
+    }
+
+    // if there is not focus on TextField, back to last page.
+    Get.key.currentState?.maybePop();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
