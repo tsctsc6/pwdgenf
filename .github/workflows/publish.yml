@@ -97,7 +97,7 @@ jobs:
       - name: Set up android signature
         if: matrix.rid == 'android'
         run: |
-          [System.IO.File]::WriteAllBytes("./android/.jks", [Convert]::FromBase64String("${{ secrets.MY_JKS_BASE64 }}"))
+          [System.IO.File]::WriteAllBytes("./android/app/.jks", [Convert]::FromBase64String("${{ secrets.MY_JKS_BASE64 }}"))
           [System.IO.File]::WriteAllBytes("./android/key.properties", [Convert]::FromBase64String("${{ secrets.MY_KEY_PROP_BASE64 }}"))
 
       - name: Build
