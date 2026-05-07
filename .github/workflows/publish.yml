@@ -9,7 +9,7 @@ defaults:
 jobs:
   release:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 1
 
     steps:
     - name: Checkout code
@@ -128,8 +128,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: >
+          Move-Item
+          ./dist/${{ steps.get_metadata.outputs.versionFull }}/${{ steps.get_metadata.outputs.assetsName }}-${{ steps.get_metadata.outputs.versionFull }}-linux.deb
+          ${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.deb
+          &&
           gh release upload v${{ steps.get_metadata.outputs.version }}
-          ./dist/${{ steps.get_metadata.outputs.versionFull }}/${{ steps.get_metadata.outputs.assetsName }}-${{ steps.get_metadata.outputs.versionFull }}-linux.deb#${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.deb
+          ${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.deb
           --repo ${{ github.event.repository.full_name }}
 
       - name: Upload release asset(android)
@@ -137,6 +141,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: >
+          Move-Item
+          ./build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+          ${{ steps.get_metadata.outputs.assetsName }}-arm64-v8a-v${{ steps.get_metadata.outputs.version }}.apk
+          &&
           gh release upload v${{ steps.get_metadata.outputs.version }}
-          ./build/app/outputs/flutter-apk/app-arm64-v8a-release.apk#${{ steps.get_metadata.outputs.assetsName }}-arm64-v8a-v${{ steps.get_metadata.outputs.version }}.apk
+          ${{ steps.get_metadata.outputs.assetsName }}-arm64-v8a-v${{ steps.get_metadata.outputs.version }}.apk
           --repo ${{ github.event.repository.full_name }}
