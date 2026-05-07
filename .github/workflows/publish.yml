@@ -99,7 +99,7 @@ jobs:
 
       - name: Build
         run: |
-          build_workflows/${{ matrix.host_os }}/build.ps1
+          build_workflows/${{ matrix.rid }}/build.ps1
 
       - name: Get release version
         id: get_metadata
