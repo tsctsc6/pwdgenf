@@ -1,0 +1,136 @@
+name: Publish
+on:
+  workflow_dispatch
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Install yq
+      uses: dcarbone/install-yq-action@v1.3.1
+
+    - name: Get release version
+      id: get_version
+      run: |
+        $v = yq '.version' pubspec.yaml
+        $v = $v.Split("+")[0]
+        "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+    - name: Create release
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      run: >
+        gh release create v${{ steps.get_version.outputs.version }}
+        --repo ${{ github.event.repository.full_name }}
+        --title v${{ steps.get_version.outputs.version }}
+        --generate-notes
+
+  build:
+    needs:
+      - release
+    strategy:
+      matrix:
+        include:
+          - rid: windows-x86
+            host_os: windows-latest
+          - rid: debian-x86
+            host_os: ubuntu-22.04
+          - rid: android
+            host_os: windows-latest
+    runs-on: ${{ matrix.host_os }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 21
+        if: matrix.rid == 'android'
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+      
+      - name: Set up .NET 10
+        if: matrix.rid == 'windows-x86'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Set up C++ Build Tools
+        if: matrix.rid == 'debian-x86'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build
+      
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Set up Android SDK
+        if: matrix.rid == 'android'
+        uses: android-actions/setup-android@v4
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install yq
+        uses: dcarbone/install-yq-action@v1.3.1
+
+      - name: Build
+        run: |
+          build_workflows/${{ matrix.host_os }}/build.ps1
+
+      - name: Get release version
+        id: get_metadata
+        run: |
+          $version = yq '.version' pubspec.yaml
+          "versionFull=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          $version = $version.Split("+")[0]
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          $assetsName = yq '.name' pubspec.yaml
+          "assetsName=$assetsName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Upload release asset(windows-x86)
+        if: matrix.rid == 'windows-x86'
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: >
+          gh release upload v${{ steps.get_metadata.outputs.version }}
+          ./build/windows/x64/runner/Release/${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.msi
+          --repo ${{ github.event.repository.full_name }}
+
+      - name: Upload release asset(debian-x86)
+        if: matrix.rid == 'debian-x86'
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: >
+          gh release upload v${{ steps.get_metadata.outputs.version }}
+          ./dist/${{ steps.get_metadata.outputs.versionFull }}/${{ steps.get_metadata.outputs.assetsName }}-${{ steps.get_metadata.outputs.versionFull }}-linux.deb
+          #${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.deb
+          --repo ${{ github.event.repository.full_name }}
+
+      - name: Upload release asset(android)
+        if: matrix.rid == 'android'
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: >
+          gh release upload v${{ steps.get_metadata.outputs.version }}
+          ./build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+          #${{ steps.get_metadata.outputs.assetsName }}-arm64-v8a-v${{ steps.get_metadata.outputs.version }}.apk
+          --repo ${{ github.event.repository.full_name }}

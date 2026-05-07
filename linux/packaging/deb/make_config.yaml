@@ -13,7 +13,6 @@ keywords:
   - Password
 
 generic_name: pwdgenf
-description: A passowrd manage tool.
 
 categories:
   - Utility
