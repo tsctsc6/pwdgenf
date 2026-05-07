@@ -1,0 +1,21 @@
+display_name: pwdgenf
+package_name: org.tsctsc6.pwdgenf
+maintainer:
+  name: tsctsc6
+  email: tsctsc6@126.com
+priority: optional
+section: x11
+installed_size: 6604
+essential: false
+icon: web/icons/Icon-maskable-512.png
+
+keywords:
+  - Password
+
+generic_name: pwdgenf
+description: A passowrd manage tool.
+
+categories:
+  - Utility
+
+startup_notify: true

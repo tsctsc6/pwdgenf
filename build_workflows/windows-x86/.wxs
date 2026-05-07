@@ -1,0 +1,88 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" 
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+    <Package Name="pwdgenf"
+        Manufacturer="org.tsctsc6" 
+        Version="$(var.BuildVersion)"
+        UpgradeCode="5c7f0eaf-6dd0-41e9-837a-e1926a7402d8"
+        Scope="perUser">
+
+        <MediaTemplate EmbedCab="yes" />
+    
+        <ui:WixUI Id="WixUI_FeatureTree" InstallDirectory="INSTALLFOLDER" />
+
+        <StandardDirectory Id="LocalAppDataFolder">
+            <Directory Id="INSTALLFOLDER" Name="pwdgenf">
+                <Directory Id="DataInstallDir" Name="data" />
+            </Directory>
+        </StandardDirectory>
+
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Directory Id="InstallProgramMenuFolder" Name="pwdgenf" />
+        </StandardDirectory>
+        <StandardDirectory Id="DesktopFolder" />
+
+        <Feature Id="Main" Title="Application" Description="Install application binaries"
+            Display="expand" ConfigurableDirectory="INSTALLFOLDER"
+            AllowAbsent="no">
+            <ComponentGroupRef Id="AppBinaries" />
+            <ComponentGroupRef Id="DataFiles" />
+
+            <Feature Id="StartMenuShortcut" Title="Start Menu Shortcut" Level="1">
+                <ComponentGroupRef Id="StartMenuShortcutGroup" />
+            </Feature>
+            <Feature Id="DesktopShortcut" Title="Desktop Shortcut" Level="1">
+                <ComponentGroupRef Id="DesktopShortcutGroup" />
+            </Feature>
+        </Feature>
+    </Package>
+
+    <Fragment>
+        <!-- Define the components for the application binaries -->
+        <ComponentGroup Id="AppBinaries" Directory="INSTALLFOLDER">
+            <Component>
+                <File Id="MainExecutable" Source="pwdgenf.exe" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="flutter_windows.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="rust_lib_pwdgenf.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="msvcp140.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="vcruntime140.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="vcruntime140_1.dll" KeyPath="yes" />
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="DataFiles" Directory="DataInstallDir">
+            <Files Include="data\**" />
+        </ComponentGroup>
+
+        <!-- Create startmenu shortcut -->
+        <ComponentGroup Id="StartMenuShortcutGroup" Directory="InstallProgramMenuFolder">
+            <Component Id="StartMenuShortcutComponent" Guid="*">
+                <Shortcut Name="pwdgenf" 
+                          Description="Launch pwdgenf"
+                          Target="[!MainExecutable]" 
+                          WorkingDirectory="INSTALLFOLDER" />
+                <RemoveFolder Id="CleanProgramMenu" On="uninstall" />
+                <RegistryValue Root="HKCU" Key="Software\org.tsctsc6\pwdgenf" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+        </ComponentGroup>
+        <!-- Create desktop shortcut -->
+        <ComponentGroup Id="DesktopShortcutGroup" Directory="DesktopFolder">
+            <Component Id="DesktopShortcutComponent" Guid="*">
+                <Shortcut Name="pwdgenf" 
+                          Description="Launch pwdgenf"
+                          Target="[!MainExecutable]" 
+                          WorkingDirectory="INSTALLFOLDER" />
+                <RegistryValue Root="HKCU" Key="Software\org.tsctsc6\pwdgenf" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>
