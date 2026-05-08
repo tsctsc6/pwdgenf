@@ -16,9 +16,13 @@ Future<void> main() async {
   await Get.putAsync(() => AppConfig.fromFile());
   Get.put(BlockUIService());
   final appEnvService = Get.find<AppEnvService>();
-  initRustLogger(
-    applicationSupportDirectory: appEnvService.applicationSupportDirectory,
-  );
+  try {
+    initRustLogger(
+      applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+    );
+  } catch (e) {
+    debugPrint(e.toString());
+  }
   runApp(const MyApp());
 }
 

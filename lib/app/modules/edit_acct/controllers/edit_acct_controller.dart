@@ -191,7 +191,6 @@ class EditAcctController extends GetxController {
     );
     if (result == null || result == false) return;
     await Get.find<BlockUIService>().runWithBlockUI(() async {
-      await Future.delayed(Duration(seconds: 3));
       final appEnvService = Get.find<AppEnvService>();
       try {
         deleteAcctData(
