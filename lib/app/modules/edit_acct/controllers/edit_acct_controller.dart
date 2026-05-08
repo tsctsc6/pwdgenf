@@ -5,6 +5,7 @@ import 'package:pwdgenf/app/modules/acct_detail/controllers/acct_detail_controll
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/app/services/block_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/calculate_password.dart';
 import 'package:pwdgenf/src/rust/api/delete_acct_data.dart';
 import 'package:pwdgenf/src/rust/api/update_acct_data.dart';
@@ -113,60 +114,62 @@ class EditAcctController extends GetxController {
   }
 
   Future<void> onSave() async {
-    if (!validateAndFocusErrorTextField()) {
-      return;
-    }
-    final appEnvService = Get.find<AppEnvService>();
-    final request = UpdateAcctDataRequest(
-      id: int.tryParse(idController.text) ?? 0,
-      userName: userNameController.text,
-      platform: platformController.text,
-      remark: remarkController.text,
-      nonceOffset: nonceOffset.value.toInt(),
-      useUpLetter: useUpLetter.value,
-      useLowLetter: useLowLetter.value,
-      useNumber: useNumber.value,
-      useSpChar: useSpecialCharacter.value,
-      pwdLen: pwdLen.value.toInt(),
-    );
-    try {
-      await updateAcctData(
-        appSupportDirectory: appEnvService.applicationSupportDirectory,
-        request: request,
+    await Get.find<BlockUIService>().runWithBlockUI(() async {
+      if (!validateAndFocusErrorTextField()) {
+        return;
+      }
+      final appEnvService = Get.find<AppEnvService>();
+      final request = UpdateAcctDataRequest(
+        id: int.tryParse(idController.text) ?? 0,
+        userName: userNameController.text,
+        platform: platformController.text,
+        remark: remarkController.text,
+        nonceOffset: nonceOffset.value.toInt(),
+        useUpLetter: useUpLetter.value,
+        useLowLetter: useLowLetter.value,
+        useNumber: useNumber.value,
+        useSpChar: useSpecialCharacter.value,
+        pwdLen: pwdLen.value.toInt(),
       );
-      if (Get.isRegistered<AcctDetailController>()) {
-        Get.find<AcctDetailController>().refreshAcctData(
-          int.tryParse(idController.text) ?? 0,
+      try {
+        await updateAcctData(
+          appSupportDirectory: appEnvService.applicationSupportDirectory,
+          request: request,
+        );
+        if (Get.isRegistered<AcctDetailController>()) {
+          Get.find<AcctDetailController>().refreshAcctData(
+            int.tryParse(idController.text) ?? 0,
+          );
+        }
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().refreshTable();
+        }
+        Get.back();
+        Get.rawSnackbar(
+          message: 'saved_text'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          borderRadius: 8,
+          margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          duration: const Duration(seconds: 3),
+          animationDuration: const Duration(milliseconds: 300),
+        );
+      } catch (e) {
+        debugPrint('Error in update account data: $e');
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error'),
+            content: Text("$e"),
+            actions: [
+              TextButton(
+                child: Text('close_text'.tr),
+                onPressed: () => Get.back(),
+              ),
+            ],
+          ),
         );
       }
-      if (Get.isRegistered<HomeController>()) {
-        Get.find<HomeController>().refreshTable();
-      }
-      Get.back();
-      Get.rawSnackbar(
-        message: 'saved_text'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        borderRadius: 8,
-        margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        duration: const Duration(seconds: 3),
-        animationDuration: const Duration(milliseconds: 300),
-      );
-    } catch (e) {
-      debugPrint('Error in update account data: $e');
-      Get.dialog(
-        AlertDialog(
-          title: const Text('Error'),
-          content: Text("$e"),
-          actions: [
-            TextButton(
-              child: Text('close_text'.tr),
-              onPressed: () => Get.back(),
-            ),
-          ],
-        ),
-      );
-    }
+    });
   }
 
   Future<void> onDeleteAcct() async {
@@ -187,39 +190,42 @@ class EditAcctController extends GetxController {
       ),
     );
     if (result == null || result == false) return;
-    final appEnvService = Get.find<AppEnvService>();
-    try {
-      deleteAcctData(
-        appSupportDirectory: appEnvService.applicationSupportDirectory,
-        id: int.tryParse(idController.text) ?? 0,
-      );
-      if (Get.isRegistered<HomeController>()) {
-        Get.find<HomeController>().refreshTable();
+    await Get.find<BlockUIService>().runWithBlockUI(() async {
+      await Future.delayed(Duration(seconds: 3));
+      final appEnvService = Get.find<AppEnvService>();
+      try {
+        deleteAcctData(
+          appSupportDirectory: appEnvService.applicationSupportDirectory,
+          id: int.tryParse(idController.text) ?? 0,
+        );
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().refreshTable();
+        }
+        Get.until((route) => Get.currentRoute == Routes.HOME);
+        Get.rawSnackbar(
+          message: 'deleted_text'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          borderRadius: 8,
+          margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          duration: const Duration(seconds: 3),
+          animationDuration: const Duration(milliseconds: 300),
+        );
+      } catch (e) {
+        debugPrint('Error in delete account data: $e');
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error'),
+            content: Text("$e"),
+            actions: [
+              TextButton(
+                child: Text('close_text'.tr),
+                onPressed: () => Get.back(),
+              ),
+            ],
+          ),
+        );
       }
-      Get.until((route) => Get.currentRoute == Routes.HOME);
-      Get.rawSnackbar(
-        message: 'deleted_text'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        borderRadius: 8,
-        margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        duration: const Duration(seconds: 3),
-        animationDuration: const Duration(milliseconds: 300),
-      );
-    } catch (e) {
-      debugPrint('Error in delete account data: $e');
-      Get.dialog(
-        AlertDialog(
-          title: const Text('Error'),
-          content: Text("$e"),
-          actions: [
-            TextButton(
-              child: Text('close_text'.tr),
-              onPressed: () => Get.back(),
-            ),
-          ],
-        ),
-      );
-    }
+    });
   }
 }

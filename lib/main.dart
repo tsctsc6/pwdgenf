@@ -5,6 +5,7 @@ import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/app/services/block_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
@@ -13,14 +14,11 @@ Future<void> main() async {
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
   await Get.putAsync(() => AppConfig.fromFile());
+  Get.put(BlockUIService());
   final appEnvService = Get.find<AppEnvService>();
-  try {
-    initRustLogger(
-      applicationSupportDirectory: appEnvService.applicationSupportDirectory,
-    );
-  } on Exception catch (e) {
-    debugPrint(e.toString());
-  }
+  initRustLogger(
+    applicationSupportDirectory: appEnvService.applicationSupportDirectory,
+  );
   runApp(const MyApp());
 }
 
@@ -45,6 +43,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
+    if (Get.find<BlockUIService>().isLoading) return true;
     if (_handleEscKeyEvent(event)) return true;
     return false;
   }
