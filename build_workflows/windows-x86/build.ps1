@@ -9,6 +9,7 @@ $version = $version.Split("+")[0]
 
 Copy-Item -Path "$buildWorkflowsPath/.wxs" -Destination "$distPath/pwdgenf-x86-v$version.wxs"
 Copy-Item -Path "$buildWorkflowsPath/vcrt.ps1" -Destination "$distPath/vcrt.ps1"
+Copy-Item -Path "$buildWorkflowsPath/license.rtf" -Destination "$distPath/license.rtf"
 
 Set-Location -Path $distPath
 ./vcrt.ps1
