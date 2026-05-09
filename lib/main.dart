@@ -82,34 +82,32 @@ class _MyAppState extends State<MyApp> {
       locale = Locale(appConfig.languageCode, appConfig.countryCode);
     }
 
-    return PopScope(
-      child: SafeArea(
-        top: false,
-        bottom: true,
-        child: GetMaterialApp(
-          title: 'pwdgetf',
-          translations: MyTranslations(),
-          locale: locale,
-          fallbackLocale: Locale('en', 'US'),
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.light,
-            ),
-            fontFamily: 'NotoSansSC-VariableFont_wght',
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: GetMaterialApp(
+        title: 'pwdgetf',
+        translations: MyTranslations(),
+        locale: locale,
+        fallbackLocale: Locale('en', 'US'),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.light,
           ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.dark,
-            ),
-            fontFamily: 'NotoSansSC-VariableFont_wght',
-          ),
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.routes,
+          fontFamily: 'NotoSansSC-VariableFont_wght',
         ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+          fontFamily: 'NotoSansSC-VariableFont_wght',
+        ),
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
       ),
     );
   }
