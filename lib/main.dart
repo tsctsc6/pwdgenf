@@ -5,7 +5,7 @@ import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
-import 'package:pwdgenf/app/services/block_ui_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
@@ -14,7 +14,7 @@ Future<void> main() async {
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
   await Get.putAsync(() => AppConfig.fromFile());
-  Get.put(BlockUIService());
+  Get.put(LockUIService());
   final appEnvService = Get.find<AppEnvService>();
   try {
     initRustLogger(
@@ -47,7 +47,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
-    if (Get.find<BlockUIService>().isLoading) return true;
     if (_handleEscKeyEvent(event)) return true;
     return false;
   }
@@ -83,32 +82,34 @@ class _MyAppState extends State<MyApp> {
       locale = Locale(appConfig.languageCode, appConfig.countryCode);
     }
 
-    return SafeArea(
-      top: false,
-      bottom: true,
-      child: GetMaterialApp(
-        title: 'pwdgetf',
-        translations: MyTranslations(),
-        locale: locale,
-        fallbackLocale: Locale('en', 'US'),
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.light,
+    return PopScope(
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: GetMaterialApp(
+          title: 'pwdgetf',
+          translations: MyTranslations(),
+          locale: locale,
+          fallbackLocale: Locale('en', 'US'),
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              brightness: Brightness.light,
+            ),
+            fontFamily: 'NotoSansSC-VariableFont_wght',
           ),
-          fontFamily: 'NotoSansSC-VariableFont_wght',
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.dark,
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              brightness: Brightness.dark,
+            ),
+            fontFamily: 'NotoSansSC-VariableFont_wght',
           ),
-          fontFamily: 'NotoSansSC-VariableFont_wght',
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
         ),
-        initialRoute: AppPages.INITIAL,
-        getPages: AppPages.routes,
       ),
     );
   }

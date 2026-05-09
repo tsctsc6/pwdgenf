@@ -8,9 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
-import 'package:pwdgenf/app/services/block_ui_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 
 class SettingsController extends GetxController {
+  final canPop = true.obs;
   late String appVersion = '';
 
   final language = ''.obs;
@@ -33,7 +34,8 @@ class SettingsController extends GetxController {
   }
 
   Future<void> backup() async {
-    await Get.find<BlockUIService>().runWithBlockUI(() async {
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
       final appEnvService = Get.find<AppEnvService>();
       final srcFile = File(
         '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
@@ -62,10 +64,12 @@ class SettingsController extends GetxController {
         animationDuration: const Duration(milliseconds: 300),
       );
     });
+    canPop.value = true;
   }
 
   Future<void> restore() async {
-    await Get.find<BlockUIService>().runWithBlockUI(() async {
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
       final appEnvService = Get.find<AppEnvService>();
       final result = await FilePicker.pickFiles(
         dialogTitle: 'restore_text'.tr,
@@ -94,6 +98,7 @@ class SettingsController extends GetxController {
         animationDuration: const Duration(milliseconds: 300),
       );
     });
+    canPop.value = true;
   }
 
   void showAbout() {

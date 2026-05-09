@@ -5,12 +5,13 @@ import 'package:pwdgenf/app/modules/acct_detail/controllers/acct_detail_controll
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
-import 'package:pwdgenf/app/services/block_ui_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/calculate_password.dart';
 import 'package:pwdgenf/src/rust/api/delete_acct_data.dart';
 import 'package:pwdgenf/src/rust/api/update_acct_data.dart';
 
 class EditAcctController extends GetxController {
+  final canPop = true.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController idController = TextEditingController();
@@ -114,7 +115,8 @@ class EditAcctController extends GetxController {
   }
 
   Future<void> onSave() async {
-    await Get.find<BlockUIService>().runWithBlockUI(() async {
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
       if (!validateAndFocusErrorTextField()) {
         return;
       }
@@ -170,6 +172,7 @@ class EditAcctController extends GetxController {
         );
       }
     });
+    canPop.value = true;
   }
 
   Future<void> onDeleteAcct() async {
@@ -190,7 +193,8 @@ class EditAcctController extends GetxController {
       ),
     );
     if (result == null || result == false) return;
-    await Get.find<BlockUIService>().runWithBlockUI(() async {
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
       final appEnvService = Get.find<AppEnvService>();
       try {
         deleteAcctData(
@@ -226,5 +230,6 @@ class EditAcctController extends GetxController {
         );
       }
     });
+    canPop.value = true;
   }
 }

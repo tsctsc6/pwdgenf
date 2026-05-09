@@ -9,35 +9,40 @@ class SettingsView extends GetView<SettingsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('settings_view'.tr), centerTitle: true),
-      body: ListView(
-        children: [
-          _buildSectionHeader('normal_settings_group_text'.tr),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text('language_text'.tr),
-            subtitle: Text(controller.language.value),
-            onTap: () => controller.setLanguage(),
+    return Obx(
+      () => PopScope(
+        canPop: controller.canPop.value,
+        child: Scaffold(
+          appBar: AppBar(title: Text('settings_view'.tr), centerTitle: true),
+          body: ListView(
+            children: [
+              _buildSectionHeader('normal_settings_group_text'.tr),
+              ListTile(
+                leading: const Icon(Icons.language),
+                title: Text('language_text'.tr),
+                subtitle: Text(controller.language.value),
+                onTap: () => controller.setLanguage(),
+              ),
+              _buildSectionHeader('backup_and_restore_group_text'.tr),
+              ListTile(
+                leading: const Icon(Icons.upload),
+                title: Text('backup_text'.tr),
+                onTap: () => controller.backup(),
+              ),
+              ListTile(
+                leading: const Icon(Icons.download),
+                title: Text('restore_text'.tr),
+                onTap: () => controller.restore(),
+              ),
+              _buildSectionHeader('misc_group_text'.tr),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: Text('about_text'.tr),
+                onTap: () => controller.showAbout(),
+              ),
+            ],
           ),
-          _buildSectionHeader('backup_and_restore_group_text'.tr),
-          ListTile(
-            leading: const Icon(Icons.upload),
-            title: Text('backup_text'.tr),
-            onTap: () => controller.backup(),
-          ),
-          ListTile(
-            leading: const Icon(Icons.download),
-            title: Text('restore_text'.tr),
-            onTap: () => controller.restore(),
-          ),
-          _buildSectionHeader('misc_group_text'.tr),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: Text('about_text'.tr),
-            onTap: () => controller.showAbout(),
-          ),
-        ],
+        ),
       ),
     );
   }

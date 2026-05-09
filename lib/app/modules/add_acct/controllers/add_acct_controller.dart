@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
-import 'package:pwdgenf/app/services/block_ui_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/calculate_password.dart';
 import 'package:pwdgenf/src/rust/api/create_acct_data.dart';
 
 class AddAcctController extends GetxController {
+  final canPop = true.obs;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController userNameController = TextEditingController();
@@ -93,7 +94,9 @@ class AddAcctController extends GetxController {
   }
 
   Future<void> onSave() async {
-    await Get.find<BlockUIService>().runWithBlockUI(() async {
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
+      // await Future.delayed(Duration(seconds: 3));
       if (!validateAndFocusErrorTextField()) {
         return;
       }
@@ -134,5 +137,6 @@ class AddAcctController extends GetxController {
         );
       }
     });
+    canPop.value = true;
   }
 }
