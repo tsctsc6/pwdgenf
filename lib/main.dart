@@ -5,6 +5,7 @@ import 'package:pwdgenf/app/my_translations.dart';
 import 'package:pwdgenf/app/routes/app_pages.dart';
 import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 import 'package:pwdgenf/src/rust/api/init.dart';
 import 'package:pwdgenf/src/rust/frb_generated.dart';
 
@@ -13,12 +14,13 @@ Future<void> main() async {
   await RustLib.init();
   await Get.putAsync(() => AppEnvService().init());
   await Get.putAsync(() => AppConfig.fromFile());
+  Get.put(LockUIService());
   final appEnvService = Get.find<AppEnvService>();
   try {
     initRustLogger(
       applicationSupportDirectory: appEnvService.applicationSupportDirectory,
     );
-  } on Exception catch (e) {
+  } catch (e) {
     debugPrint(e.toString());
   }
   runApp(const MyApp());
