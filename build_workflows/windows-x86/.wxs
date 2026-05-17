@@ -11,6 +11,8 @@
     
         <ui:WixUI Id="WixUI_FeatureTree" InstallDirectory="INSTALLFOLDER" />
 
+        <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+
         <StandardDirectory Id="LocalAppDataFolder">
             <Directory Id="INSTALLFOLDER" Name="pwdgenf">
                 <Directory Id="DataInstallDir" Name="data" />

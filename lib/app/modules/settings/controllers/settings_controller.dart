@@ -8,8 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:pwdgenf/app/modules/home/controllers/home_controller.dart';
 import 'package:pwdgenf/app/services/app_config.dart';
 import 'package:pwdgenf/app/services/app_env_service.dart';
+import 'package:pwdgenf/app/services/lock_ui_service.dart';
 
 class SettingsController extends GetxController {
+  final canPop = true.obs;
   late String appVersion = '';
 
   final language = ''.obs;
@@ -32,63 +34,71 @@ class SettingsController extends GetxController {
   }
 
   Future<void> backup() async {
-    final appEnvService = Get.find<AppEnvService>();
-    final srcFile = File(
-      '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
-    );
-    final dateTime = DateTime.now();
-    final formattedDate = DateFormat('yyyyMMdd-HHmmss').format(dateTime);
-    final result = await FilePicker.saveFile(
-      dialogTitle: 'backup_text'.tr,
-      fileName: 'pwdgenf-$formattedDate.db',
-      initialDirectory: appEnvService.downloadDirectory,
-      type: FileType.custom,
-      allowedExtensions: ['db'],
-      lockParentWindow: true,
-      bytes: await srcFile.readAsBytes(),
-    );
-    if (result == null) {
-      return;
-    }
-    Get.rawSnackbar(
-      message: 'backuped_text'.tr,
-      snackPosition: SnackPosition.BOTTOM,
-      borderRadius: 8,
-      margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      duration: const Duration(seconds: 3),
-      animationDuration: const Duration(milliseconds: 300),
-    );
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
+      final appEnvService = Get.find<AppEnvService>();
+      final srcFile = File(
+        '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
+      );
+      final dateTime = DateTime.now();
+      final formattedDate = DateFormat('yyyyMMdd-HHmmss').format(dateTime);
+      final result = await FilePicker.saveFile(
+        dialogTitle: 'backup_text'.tr,
+        fileName: 'pwdgenf-$formattedDate.db',
+        initialDirectory: appEnvService.downloadDirectory,
+        type: FileType.custom,
+        allowedExtensions: ['db'],
+        lockParentWindow: true,
+        bytes: await srcFile.readAsBytes(),
+      );
+      if (result == null) {
+        return;
+      }
+      Get.rawSnackbar(
+        message: 'backuped_text'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+        borderRadius: 8,
+        margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        duration: const Duration(seconds: 3),
+        animationDuration: const Duration(milliseconds: 300),
+      );
+    });
+    canPop.value = true;
   }
 
   Future<void> restore() async {
-    final appEnvService = Get.find<AppEnvService>();
-    final result = await FilePicker.pickFiles(
-      dialogTitle: 'restore_text'.tr,
-      initialDirectory: appEnvService.downloadDirectory,
-      type: FileType.custom,
-      allowedExtensions: ['db'],
-      lockParentWindow: true,
-    );
-    if (result == null) {
-      return;
-    }
-    File srcFile = File(result.files.single.path!);
-    await srcFile.copy(
-      '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
-    );
-    if (Get.isRegistered<HomeController>()) {
-      Get.find<HomeController>().goToFirstPageAndRefreshTable();
-    }
-    Get.rawSnackbar(
-      message: 'restored_text'.tr,
-      snackPosition: SnackPosition.BOTTOM,
-      borderRadius: 8,
-      margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      duration: const Duration(seconds: 3),
-      animationDuration: const Duration(milliseconds: 300),
-    );
+    canPop.value = false;
+    await Get.find<LockUIService>().runWithLockUI(() async {
+      final appEnvService = Get.find<AppEnvService>();
+      final result = await FilePicker.pickFiles(
+        dialogTitle: 'restore_text'.tr,
+        initialDirectory: appEnvService.downloadDirectory,
+        type: FileType.custom,
+        allowedExtensions: ['db'],
+        lockParentWindow: true,
+      );
+      if (result == null) {
+        return;
+      }
+      File srcFile = File(result.files.single.path!);
+      await srcFile.copy(
+        '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
+      );
+      if (Get.isRegistered<HomeController>()) {
+        Get.find<HomeController>().goToFirstPageAndRefreshTable();
+      }
+      Get.rawSnackbar(
+        message: 'restored_text'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+        borderRadius: 8,
+        margin: const EdgeInsets.only(bottom: 24, left: 32, right: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        duration: const Duration(seconds: 3),
+        animationDuration: const Duration(milliseconds: 300),
+      );
+    });
+    canPop.value = true;
   }
 
   void showAbout() {
