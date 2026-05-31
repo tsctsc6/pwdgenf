@@ -163,28 +163,41 @@ class AcctDataAsyncDataSource extends AsyncDataTableSource {
 }
 
 Widget buildHighlightedText(String text, String keyword) {
-  if (!text.contains(keyword)) {
+  if (keyword.isEmpty) {
     return Text(text);
   }
 
-  List<String> parts = text.split(keyword);
-  List<TextSpan> spans = [];
+  final RegExp regExp = RegExp(RegExp.escape(keyword), caseSensitive: false);
 
-  for (int i = 0; i < parts.length; i++) {
-    if (parts[i].isNotEmpty) {
-      spans.add(TextSpan(text: parts[i]));
+  final Iterable<Match> matches = regExp.allMatches(text);
+
+  if (matches.isEmpty) {
+    return Text(text);
+  }
+
+  List<TextSpan> spans = [];
+  int currentIndex = 0;
+
+  for (final Match match in matches) {
+    if (match.start > currentIndex) {
+      spans.add(TextSpan(text: text.substring(currentIndex, match.start)));
     }
-    if (i < parts.length - 1) {
-      spans.add(
-        TextSpan(
-          text: keyword,
-          style: TextStyle(
-            color: Get.theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
+
+    spans.add(
+      TextSpan(
+        text: text.substring(match.start, match.end),
+        style: TextStyle(
+          color: Get.theme.colorScheme.primary,
+          fontWeight: FontWeight.bold,
         ),
-      );
-    }
+      ),
+    );
+
+    currentIndex = match.end;
+  }
+
+  if (currentIndex < text.length) {
+    spans.add(TextSpan(text: text.substring(currentIndex)));
   }
 
   return Text.rich(TextSpan(children: spans));
