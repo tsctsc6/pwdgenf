@@ -1,5 +1,5 @@
 name: pwdgenf
-description: "A passowrd manage tool."
+description: "A password management tool."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -32,16 +32,18 @@ dependencies:
     sdk: flutter
   rust_lib_pwdgenf:
     path: rust_builder
-  flutter_rust_bridge: 2.12.0
+  flutter_rust_bridge: ^2.13.0
   get: ^4.7.3
   path_provider: ^2.1.5
   freezed_annotation: ^3.1.0
-  data_table_2: ^2.7.2
+  data_table_2: ^3.0.0
   flutter_spinbox: ^0.13.1
-  file_picker: ^11.0.2
+  file_picker: ^12.1.2
   intl: ^0.20.2
-  package_info_plus: ^9.0.1
+  package_info_plus: ^10.2.1
   toml: ^0.18.0
+  material_ui: ^1.1.0
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -56,7 +58,26 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   build_runner: ^2.14.1
-  freezed: ^3.2.5
+  freezed: ^4.0.1
+
+flutter_launcher_icons:
+  image_path: "assets/images/icon.png"
+
+  android: "launcher_icon"
+
+  ios: true
+
+  web:
+    generate: true
+    image_path: "assets/images/icon.png"
+
+  windows:
+    generate: true
+    image_path: "assets/images/icon.png"
+
+  macos:
+    generate: true
+    image_path: "assets/images/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +97,8 @@ flutter:
   assets:
     - assets/fonts/NotoSansSC-VariableFont_wght.ttf
     - assets/config.example.toml
+    - assets/images/icon.png
+    - assets/images/icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

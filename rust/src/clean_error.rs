@@ -1,9 +1,9 @@
 use std::fmt::Write;
 
 #[derive(Debug, thiserror::Error)]
-pub enum CleanError {
-    #[error("{message}")]
-    AnyhowError { message: String },
+#[error("{message}")]
+pub struct CleanError {
+    pub message: String,
 }
 
 impl From<anyhow::Error> for CleanError {
@@ -17,7 +17,7 @@ impl From<anyhow::Error> for CleanError {
             }
         }
 
-        CleanError::AnyhowError {
+        CleanError {
             message: full_message,
         }
     }
