@@ -81,7 +81,7 @@ class SettingsController extends GetxController {
       if (result == null) {
         return;
       }
-      File srcFile = File(result.files.single.path!);
+      File srcFile = File(result.single.path!);
       await srcFile.copy(
         '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
       );
