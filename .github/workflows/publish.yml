@@ -113,20 +113,19 @@ jobs:
           "assetsName=$assetsName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: Build
-        if: matrix.rid == 'windows-x86' || matrix.rid == 'debian-x86' || matrix.rid == 'android'
         env:
           APP_VERSION: ${{ steps.get_metadata.outputs.version }}
         run: |
           build_workflows/${{ matrix.rid }}/build.ps1
 
-      - name: Build with archlinux
+      - name: Package for archlinux
         if: matrix.rid == 'arch-x86'
         uses: docker://archlinux:latest
         env:
           APP_VERSION: ${{ steps.get_metadata.outputs.version }}
         with:
           args: |
-            bash build_workflows/${{ matrix.rid }}/build.ps1
+            makepkg -f
 
       - name: Upload release asset(windows-x86)
         if: matrix.rid == 'windows-x86'
