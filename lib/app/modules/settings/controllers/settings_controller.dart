@@ -48,7 +48,7 @@ class SettingsController extends GetxController {
         initialDirectory: appEnvService.downloadDirectory,
         type: FileType.custom,
         allowedExtensions: ['db'],
-        lockParentWindow: true,
+        windowsOptions: WindowsOptions(lockParentWindow: true),
         bytes: await srcFile.readAsBytes(),
       );
       if (result == null) {
@@ -76,11 +76,8 @@ class SettingsController extends GetxController {
         initialDirectory: appEnvService.downloadDirectory,
         type: FileType.custom,
         allowedExtensions: ['db'],
-        lockParentWindow: true,
+        windowsOptions: WindowsOptions(lockParentWindow: true),
       );
-      if (result == null) {
-        return;
-      }
       File srcFile = File(result.single.path!);
       await srcFile.copy(
         '${appEnvService.applicationSupportDirectory}/pwdgenf.db',
