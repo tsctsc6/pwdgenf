@@ -126,7 +126,7 @@ jobs:
             sh -c "pacman -Sy --noconfirm base-devel debugedit fakeroot gtk3 libepoxy && \
             useradd -m builder && chown -R builder:builder /github/workspace && \
             su builder -c 'cd /github/workspace/build/linux/x64/release/ && makepkg -f' && \
-            chown -R root:root /github/workspace"
+            chown -R 1001:121 /github/workspace"
 
       - name: Upload release asset(windows-x86)
         if: matrix.rid == 'windows-x86'
