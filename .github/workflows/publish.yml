@@ -155,7 +155,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: >
           Move-Item
-          ./build/linux/x64/release/org.tsctsc6.${{ steps.get_metadata.outputs.assetsName }}-1-x86_64.pkg.tar.zst
+          ./build/linux/x64/release/org.tsctsc6.${{ steps.get_metadata.outputs.assetsName }}-${{ steps.get_metadata.outputs.version }}-1-x86_64.pkg.tar.zst
           ${{ steps.get_metadata.outputs.assetsName }}-x86-v${{ steps.get_metadata.outputs.version }}.pkg.tar.zst
           &&
           gh release upload v${{ steps.get_metadata.outputs.version }}
