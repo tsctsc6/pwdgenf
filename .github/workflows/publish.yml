@@ -44,6 +44,8 @@ jobs:
             host_os: windows-latest
           - rid: debian-x86
             host_os: ubuntu-latest
+          - rid: arch-x86
+            host_os: ubuntu-latest
           - rid: android
             host_os: windows-latest
     runs-on: ${{ matrix.host_os }}
