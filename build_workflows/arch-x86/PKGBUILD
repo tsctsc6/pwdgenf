@@ -1,0 +1,28 @@
+# move to <project>/build/linux/x64/release/
+Maintainer="tsctsc6 <tsctsc6@126.com>"
+pkgname=org.tsctsc6.pwdgenf
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="A password management tool."
+arch=('x86_64')
+url="https://github.com/tsctsc6/pwdgenf"
+license=('MIT')
+depends=('gtk3' 'libepoxy')
+
+pkgver() {
+    echo "${APP_VERSION:-0.0.1}"
+}
+
+package() {
+    install -d "${pkgdir}/opt/pwdgenf"
+    cp -r "${startdir}/bundle/"* "${pkgdir}/opt/pwdgenf/"
+
+    install -d "${pkgdir}/usr/bin"
+    ln -s "/opt/pwdgenf/pwdgenf" "${pkgdir}/usr/bin/pwdgenf"
+
+    install -Dm644 "${startdir}/pwdgenf.desktop.bak" \
+        "${pkgdir}/usr/share/applications/pwdgenf.desktop"
+
+    install -Dm644 "${startdir}/bundle/data/flutter_assets/assets/images/icon.png" \
+        "${pkgdir}/usr/share/icons/hicolor/1024x1024/apps/${pkgname}.png"
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=pwdgenf
+Comment=A password management tool.
+Exec=pwdgenf
+Icon=pwdgenf
+Terminal=false
+Type=Application
+Categories=Utility;
