@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' hide ThemeData, ColorScheme, Colors, Brightness;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pwdgenf/app/my_translations.dart';
@@ -90,6 +91,7 @@ class _MyAppState extends State<MyApp> {
         translations: MyTranslations(),
         locale: locale,
         fallbackLocale: Locale('en', 'US'),
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
