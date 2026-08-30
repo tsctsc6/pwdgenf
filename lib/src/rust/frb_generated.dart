@@ -573,12 +573,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   CleanError dco_decode_clean_error(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return CleanError_AnyhowError(message: dco_decode_String(raw[1]));
-      default:
-        throw Exception("unreachable");
-    }
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return CleanError(message: dco_decode_String(arr[0]));
   }
 
   @protected
@@ -781,15 +779,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   CleanError sse_decode_clean_error(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_message = sse_decode_String(deserializer);
-        return CleanError_AnyhowError(message: var_message);
-      default:
-        throw UnimplementedError('');
-    }
+    var var_message = sse_decode_String(deserializer);
+    return CleanError(message: var_message);
   }
 
   @protected
@@ -1012,11 +1003,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_clean_error(CleanError self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case CleanError_AnyhowError(message: final message):
-        sse_encode_i_32(0, serializer);
-        sse_encode_String(message, serializer);
-    }
+    sse_encode_String(self.message, serializer);
   }
 
   @protected

@@ -5,13 +5,19 @@
 
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
-part 'clean_error.freezed.dart';
 
-@freezed
-sealed class CleanError with _$CleanError implements FrbException {
-  const CleanError._();
+class CleanError implements FrbException {
+  final String message;
 
-  const factory CleanError.anyhowError({required String message}) =
-      CleanError_AnyhowError;
+  const CleanError({required this.message});
+
+  @override
+  int get hashCode => message.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CleanError &&
+          runtimeType == other.runtimeType &&
+          message == other.message;
 }

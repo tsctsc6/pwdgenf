@@ -529,18 +529,10 @@ impl SseDecode for crate::api::calculate_password::CalculatePasswordRequest {
 impl SseDecode for crate::clean_error::CleanError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut tag_ = <i32>::sse_decode(deserializer);
-        match tag_ {
-            0 => {
-                let mut var_message = <String>::sse_decode(deserializer);
-                return crate::clean_error::CleanError::AnyhowError {
-                    message: var_message,
-                };
-            }
-            _ => {
-                unimplemented!("");
-            }
-        }
+        let mut var_message = <String>::sse_decode(deserializer);
+        return crate::clean_error::CleanError {
+            message: var_message,
+        };
     }
 }
 
@@ -818,14 +810,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::calculate_password::Calculate
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::clean_error::CleanError {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        match self {
-            crate::clean_error::CleanError::AnyhowError { message } => {
-                [0.into_dart(), message.into_into_dart().into_dart()].into_dart()
-            }
-            _ => {
-                unimplemented!("");
-            }
-        }
+        [self.message.into_into_dart().into_dart()].into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
@@ -989,15 +974,7 @@ impl SseEncode for crate::api::calculate_password::CalculatePasswordRequest {
 impl SseEncode for crate::clean_error::CleanError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        match self {
-            crate::clean_error::CleanError::AnyhowError { message } => {
-                <i32>::sse_encode(0, serializer);
-                <String>::sse_encode(message, serializer);
-            }
-            _ => {
-                unimplemented!("");
-            }
-        }
+        <String>::sse_encode(self.message, serializer);
     }
 }
 
