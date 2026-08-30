@@ -123,7 +123,7 @@ jobs:
           APP_VERSION: ${{ steps.get_metadata.outputs.version }}
         with:
           args: |
-            sh -c "pacman -Sy --noconfirm base-devel debugedit fakeroot && \
+            sh -c "pacman -Sy --noconfirm base-devel debugedit fakeroot gtk3 libepoxy && \
             useradd -m builder && chown -R builder:builder /github/workspace && \
             su builder -c 'cd /github/workspace/build/linux/x64/release/ && makepkg -f'"
 

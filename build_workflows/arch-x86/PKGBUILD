@@ -1,17 +1,13 @@
 # move to <project>/build/linux/x64/release/
 Maintainer="tsctsc6 <tsctsc6@126.com>"
 pkgname=org.tsctsc6.pwdgenf
-pkgver=0.0.1
+pkgver=${APP_VERSION:-0.0.1}
 pkgrel=1
 pkgdesc="A password management tool."
 arch=('x86_64')
 url="https://github.com/tsctsc6/pwdgenf"
 license=('MIT')
 depends=('gtk3' 'libepoxy')
-
-pkgver() {
-    echo "${APP_VERSION:-0.0.1}"
-}
 
 package() {
     install -d "${pkgdir}/opt/pwdgenf"
