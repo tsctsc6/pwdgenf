@@ -231,7 +231,7 @@ fn uniformly_pick(char_set: &[char], key: u8) -> char {
 | Uppercase | `A-Z` | 26 |
 | Lowercase | `a-z` | 26 |
 | Digits | `0-9` | 10 |
-| Special | `~!@#$%^&*()_+-=` | 32 |
+| Special | `~!@#$%^&*()_+-=` | 15 |
 
 ---
 
