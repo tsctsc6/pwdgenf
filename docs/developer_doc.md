@@ -282,6 +282,23 @@ Each module follows the GetX pattern: **Binding → Controller → View**.
 | `EDIT_ACCT` | `/edit-acct` | `EditAcctView` | Edit or delete account |
 | `ACCT_DETAIL` | `/acct-detail` | `AcctDetailView` | View account + generate password |
 
+```mermaid
+---
+title: Route relationship
+---
+flowchart TD
+    A[HOME];
+    B[SETTINGS];
+    C[ADD_ACCT];
+    D[ACCT_DETAIL];
+    E[EDIT_ACCT];
+
+    A -- setting button --> B;
+    A -- add button --> C;
+    A -- table item --> D;
+    D -- edit button --> E;
+```
+
 All routes use `Transition.cupertino` for page transitions.
 
 ### 6.2 Home Module
